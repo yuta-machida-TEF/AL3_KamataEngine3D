@@ -9,11 +9,21 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 
 	sprite_ = Sprite::Create(textureHandle_, {100,50});
 
+	model_ = Model::Create();
+
+	//ワールドトランスフォームの初期化
+	worldTransform_.Initialize();
+
+	//カメラの初期化
+	camera_.Initialize();
+
 }
 
 GameScene::~GameScene() 
 {
 	delete sprite_;
+
+	delete model_;
 }
 
 void GameScene::Update() {}
@@ -23,10 +33,12 @@ void GameScene::Draw() {
 	//DirectXCommonインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
-	//スプライト描画前処理
-	Sprite::PreDraw(dxCommon->GetCommandList());
+	Model::PreDraw(dxCommon->GetCommandList());
 
-	sprite_->Draw();
+	
+	//3Dモデル描画
+	model_->Draw(worldTransform_, camera_, textureHandle_);
 
-	Sprite::PostDraw();
+	//3Dモデル描画前処理
+	Model::PostDraw();
 }
