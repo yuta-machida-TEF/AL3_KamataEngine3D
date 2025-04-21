@@ -1,5 +1,6 @@
 #pragma once
 #include "KamataEngine.h"
+#include "Player.h"
 
 
 class GameScene
@@ -22,6 +23,9 @@ public:
 
 	//スプライト
 	KamataEngine::Sprite* sprite_ = nullptr;
+	//自キャラ
+	Player* player_ = nullptr;
+
 	
 	//デストラクタ
 	~GameScene();
