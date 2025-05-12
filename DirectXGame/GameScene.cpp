@@ -11,15 +11,15 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 
 	sprite_ = Sprite::Create(textureHandle_, {100,50});
 
-	model_ = Model::Create();
+	modelskydome_ = Model::CreateFromOBJ("skydome", true);
 
 	//デバックカメラの生成
 	debugCamera_ = new DebugCamera(100,200);
 
-
+	cube_ = Model::CreateFromOBJ("cube");
 
 	//3Dモデルデータの生成
-	GameModel_ = Model::Create();
+    model_ = Model::Create();
 
 	//ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
@@ -29,8 +29,13 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 
 	//自キャラの生成
 	player_ = new Player();
+
+	skydome_ = new Skydome();
+
 	//自キャラの初期化
 	player_->Initialize(model_, textureHandle_,&camera_);
+
+	skydome_->Initialize(modelskydome_,&camera_);
 
 	//要素数
 	const uint32_t kNumBlockVirtical = 10;
@@ -66,15 +71,16 @@ GameScene::~GameScene()
 {
 	delete sprite_;
 
-	delete model_;
+	delete skydome_;
 
 	delete player_;
 
 	// 3Dモデルデータの解放
-	delete GameModel_;
+	delete model_;
 
 	delete debugCamera_;
 
+	
 	
 		for (std::vector<KamataEngine::WorldTransform*> &worldTransformBlockLine : worldTransformBlocks_) 
 		{
@@ -160,10 +166,11 @@ void GameScene::Draw() {
 			if (!worldTransformBlock) {
 				continue;
 			}
-			model_->Draw(*worldTransformBlock, camera_);
+			cube_->Draw(*worldTransformBlock, camera_);
 		}
 	}
 		
+	skydome_->Draw();
 	
 
 	//3Dモデル描画前処理

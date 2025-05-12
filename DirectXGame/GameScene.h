@@ -2,6 +2,7 @@
 #include<vector>
 #include "KamataEngine.h"
 #include "Player.h"
+#include "Skydome.h"
 
 
 class GameScene {
@@ -23,10 +24,8 @@ public:
 	//デバックカメラの生成
 	//debugCamera_ = new DebugCamera();
 
-
-
 	// 3Dモデル
-	KamataEngine::Model* model_ = nullptr;
+	KamataEngine::Model* modelskydome_ = nullptr;
 
 	// ワールドトランスフォーム
 	KamataEngine::WorldTransform worldTransform_;
@@ -39,9 +38,15 @@ public:
 	// 自キャラ
 	Player* player_ = nullptr;
 
+	//キューブ
+	Skydome* skydome_ = nullptr;
+
 	// 3Dモデルデータ
-	KamataEngine::Model* GameModel_ = nullptr;
+	KamataEngine::Model* model_ = nullptr;
 	
+	//3D
+	KamataEngine::Model* cube_ = nullptr;
+
 	//デストラクタ
 	~GameScene();
 
