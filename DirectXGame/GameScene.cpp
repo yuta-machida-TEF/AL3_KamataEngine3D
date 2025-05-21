@@ -37,38 +37,78 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 
 	skydome_->Initialize(modelskydome_,&camera_);
 
+	
+	
+
 	//要素数
-	const uint32_t kNumBlockVirtical = 10;
-	const uint32_t kNumBlockHorizontal = 20;
+	//const uint32_t kNumBlockVirtical = 10;
+	//const uint32_t kNumBlockHorizontal = 20;
     //ブロック1個分の横幅
-	const float kBlockWidth = 2.0f;
-	const float kBlockHeight = 2.0f;
-	//要素数を変更する
-	worldTransformBlocks_.resize(kNumBlockVirtical);
+	//const float kBlockWidth = 2.0f;
+	//const float kBlockHeight = 2.0f;
+	////要素数を変更する
+	//worldTransformBlocks_.resize(10);
+
+	//////キューブの生成
+	//for (uint32_t i = 0; i < 10; i++) 
+	//{
+	//	worldTransformBlocks_[i].resize(20);		
+	//}
+
+	////ブロックの生成
+	//for (uint32_t i = 0; i < 10; i++) {
+	//	for (uint32_t j = 0; j < 20; j++) {
+	//		if ((i + j) % 2 == 0)//1マス分にボックスの形にしたいなら(i + j)にする 
+	//		{
+	//			continue;
+	//		}
+	//		worldTransformBlocks_[i][j] = new WorldTransform();
+	//		worldTransformBlocks_[i][j]->Initialize();
+	//		worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
+	//		worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * i;
+	//	}
+	//}
+
+	mapChipField_ = new MapChipField;
+	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+	GenerateBlocks();
+}
+
+void GameScene::GenerateBlocks() 
+{
+	// 要素数
+	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
+	// ブロック1個分の横幅
+	//const float kBlockWidth = 2.0f;
+	//const float kBlockHeight = 2.0f;
+	// 要素数を変更する
+	worldTransformBlocks_.resize(numBlockVirtical);
 
 	////キューブの生成
-	for (uint32_t i = 0; i < kNumBlockVirtical; i++) 
+	for (uint32_t i = 0; i < numBlockVirtical; i++) 
 	{
-		worldTransformBlocks_[i].resize(kNumBlockHorizontal);		
+		worldTransformBlocks_[i].resize(numBlockHorizontal);
 	}
 
-	//ブロックの生成
-	for (uint32_t i = 0; i < kNumBlockVirtical; i++) {
-		for (uint32_t j = 0; j < kNumBlockHorizontal; j++) {
-			if ((i + j) % 2 == 0)//1マス分にボックスの形にしたいなら(i + j)にする 
+	// ブロックの生成
+	for (uint32_t i = 0; i < numBlockVirtical; i++) {
+		for (uint32_t j = 0; j < numBlockHorizontal; j++) {
+			//if (mapChipField_->GetMapChipTypeByIndex(j,i) == MapChipType::kBlock) // 1マス分にボックスの形にしたいなら(i + j)にする
 			{
-				continue;
-			}
-			worldTransformBlocks_[i][j] = new WorldTransform();
-			worldTransformBlocks_[i][j]->Initialize();
-			worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
-			worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * i;
+
+
+				WorldTransform*worldTransform = new WorldTransform();
+			    worldTransform->Initialize();
+				worldTransformBlocks_[i][j] = worldTransform;
+				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j,i);
+			}	
 		}
 	}
 }
 
-GameScene::~GameScene() 
-{
+
+GameScene::~GameScene() {
 	delete sprite_;
 
 	delete skydome_;
@@ -80,7 +120,8 @@ GameScene::~GameScene()
 
 	delete debugCamera_;
 
-	
+    // マップチップフィールドの解放
+	delete mapChipField_;
 	
 		for (std::vector<KamataEngine::WorldTransform*> &worldTransformBlockLine : worldTransformBlocks_) 
 		{

@@ -3,12 +3,15 @@
 #include "KamataEngine.h"
 #include "Player.h"
 #include "Skydome.h"
+#include "MapChippField.h"
 
 
 class GameScene {
 public:
 	// 初期化
 	void Initialize();
+
+	void GenerateBlocks();
 
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_; // stdでエラーが起きたらKamataEngine::をいれる
 
@@ -46,6 +49,10 @@ public:
 	
 	//3D
 	KamataEngine::Model* cube_ = nullptr;
+
+	//マップチップフィールド
+	MapChipField* mapChipField_;
+
 
 	//デストラクタ
 	~GameScene();
