@@ -17,11 +17,11 @@ std::map<std::string, MapChipType> mapChipTable = {
 
 MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex) 
 { 
-	if (xIndex < 0 || kNumBlockHorizontal - 1 > xIndex) 
+	if (xIndex < 0 || kNumBlockHorizontal - 1 < xIndex) 
 	{
 		return MapChipType::kBlank;
 	}
-	if (yIndex < 0 || kNumBlockVirtical - 1 > yIndex) 
+	if (yIndex < 0 || kNumBlockVirtical - 1 < yIndex) 
 	{
 		return MapChipType::kBlank;
 	}

@@ -16,7 +16,7 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 	//デバックカメラの生成
 	debugCamera_ = new DebugCamera(100,200);
 
-	cube_ = Model::CreateFromOBJ("cube");
+	cube_ = Model::CreateFromOBJ("block");
 
 	//3Dモデルデータの生成
     model_ = Model::Create();
@@ -40,7 +40,7 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 	skydome_->Initialize(modelskydome_,&camera_);
 
 	
-	
+
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	GenerateBlocks();
 

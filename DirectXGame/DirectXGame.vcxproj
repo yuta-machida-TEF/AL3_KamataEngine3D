@@ -108,7 +108,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="MapChippField.cpp" />
+    <ClCompile Include="MapChipField.cpp" />
     <ClCompile Include="MyMath.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Skydome.cpp" />
