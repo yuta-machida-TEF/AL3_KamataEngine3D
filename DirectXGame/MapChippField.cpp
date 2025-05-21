@@ -1,5 +1,5 @@
 #include <map>
-#include "MapChippField.h"
+#include "MapChipField.h"
 #include<fstream>
 #include<sstream>
 using namespace KamataEngine;
@@ -31,7 +31,7 @@ MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex
 
 KamataEngine::Vector3 MapChipField::GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex) 
 { 
-	return KamataEngine::Vector3(kBlockWidth * xIndex, kBlockHeight * (kNumBlockHorizontal - 1 - yIndex),0); 
+	return KamataEngine::Vector3(kBlockWidth * xIndex, kBlockHeight * (kNumBlockVirtical - 1 - yIndex), 0);
 }
 
 void MapChipField::ResetMapChipData() {

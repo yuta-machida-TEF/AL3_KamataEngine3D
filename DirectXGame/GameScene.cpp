@@ -32,6 +32,8 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 
 	skydome_ = new Skydome();
 
+	mapChipField_ = new MapChipField;
+
 	//自キャラの初期化
 	player_->Initialize(model_, textureHandle_,&camera_);
 
@@ -39,6 +41,8 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 
 	
 	
+	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+	GenerateBlocks();
 
 	//要素数
 	//const uint32_t kNumBlockVirtical = 10;
@@ -69,9 +73,8 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 	//	}
 	//}
 
-	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
-	GenerateBlocks();
+	
+	
 }
 
 void GameScene::GenerateBlocks() 
@@ -94,14 +97,12 @@ void GameScene::GenerateBlocks()
 	// ブロックの生成
 	for (uint32_t i = 0; i < numBlockVirtical; i++) {
 		for (uint32_t j = 0; j < numBlockHorizontal; j++) {
-			//if (mapChipField_->GetMapChipTypeByIndex(j,i) == MapChipType::kBlock) // 1マス分にボックスの形にしたいなら(i + j)にする
+			if (mapChipField_->GetMapChipTypeByIndex(j,i) == MapChipType::kBlock) // 1マス分にボックスの形にしたいなら(i + j)にする
 			{
-
-
 				WorldTransform*worldTransform = new WorldTransform();
 			    worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
-				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j,i);
+				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
 			}	
 		}
 	}
@@ -204,7 +205,8 @@ void GameScene::Draw() {
 
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
-			if (!worldTransformBlock) {
+			if (!worldTransformBlock) 
+			{
 				continue;
 			}
 			cube_->Draw(*worldTransformBlock, camera_);

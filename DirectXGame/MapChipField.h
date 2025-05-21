@@ -14,6 +14,8 @@ class MapChipField {
 
 public:
 
+	
+
 	MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex);
 
 	KamataEngine::Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
@@ -31,8 +33,11 @@ public:
 	static inline const uint32_t kNumBlockVirtical = 20;
 	static inline const uint32_t kNumBlockHorizontal = 100;
 
-    static inline const uint32_t GetNumBlockVirtical()  { return kNumBlockVirtical; }
-	static inline const uint32_t GetNumBlockHorizontal(){ return kNumBlockHorizontal;}
+	uint32_t GetNumBlockVirtical() const { return kNumBlockVirtical; }
+	uint32_t GetNumBlockHorizontal() const { return kNumBlockHorizontal; }
+
+ //  /* static inline const uint32_t GetNumBlockVirtical()  { return kNumBlockVirtical; }
+	//static inline const uint32_t GetNumBlockHorizontal(){ return kNumBlockHorizontal;}*/
 
 	MapChipData mapChipData_;
 

@@ -112,7 +112,6 @@
     <ClCompile Include="MyMath.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Skydome.cpp" />
-    <ClCompile Include="MapChipField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">
@@ -194,7 +193,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="MyMath.h" />
     <ClInclude Include="Skydome.h" />
-    <ClInclude Include="MapChippField.h" />
+    <ClInclude Include="MapChipField.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
