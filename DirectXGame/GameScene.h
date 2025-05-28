@@ -30,6 +30,9 @@ public:
 
 	// 3Dモデル
 	KamataEngine::Model* modelskydome_ = nullptr;
+   
+	//モデルプレイヤー
+	KamataEngine::Model* modelPlayer_ = nullptr;
 
 	// ワールドトランスフォーム
 	KamataEngine::WorldTransform worldTransform_;
@@ -39,20 +42,21 @@ public:
 
 	// スプライト
 	KamataEngine::Sprite* sprite_ = nullptr;
+
 	// 自キャラ
 	Player* player_ = nullptr;
 
 	//キューブ
 	Skydome* skydome_ = nullptr;
 
+	// マップチップフィールド
+	MapChipField* mapChipField_;
+
 	// 3Dモデルデータ
 	KamataEngine::Model* model_ = nullptr;
 	
 	//3D
 	KamataEngine::Model* cube_ = nullptr;
-
-	//マップチップフィールド
-	MapChipField* mapChipField_;
 
 
 	//デストラクタ
