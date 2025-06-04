@@ -1,6 +1,7 @@
 #include "MyMath.h"
 #include "GameScene.h"
-//#include "Player.h"
+#include "Player.h"
+#include "CameraController.h"
 using namespace KamataEngine;
 
 
@@ -36,8 +37,6 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 	//カメラの初期化
 	camera_.Initialize();
 
-	
-
 	skydome_ = new Skydome();
 
 	//自キャラの初期化
@@ -45,41 +44,16 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 
 	skydome_->Initialize(modelskydome_,&camera_);
 
-	
-
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	GenerateBlocks();
 
-	//要素数
-	//const uint32_t kNumBlockVirtical = 10;
-	//const uint32_t kNumBlockHorizontal = 20;
-    //ブロック1個分の横幅
-	//const float kBlockWidth = 2.0f;
-	//const float kBlockHeight = 2.0f;
-	////要素数を変更する
-	//worldTransformBlocks_.resize(10);
+	cameraController_->Initialze();
 
-	//////キューブの生成
-	//for (uint32_t i = 0; i < 10; i++) 
-	//{
-	//	worldTransformBlocks_[i].resize(20);		
-	//}
-
-	////ブロックの生成
-	//for (uint32_t i = 0; i < 10; i++) {
-	//	for (uint32_t j = 0; j < 20; j++) {
-	//		if ((i + j) % 2 == 0)//1マス分にボックスの形にしたいなら(i + j)にする 
-	//		{
-	//			continue;
-	//		}
-	//		worldTransformBlocks_[i][j] = new WorldTransform();
-	//		worldTransformBlocks_[i][j]->Initialize();
-	//		worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
-	//		worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * i;
-	//	}
-	//}
-
-	
+	//カメラコントローラの初期化
+	cameraController_ = new CameraController;
+	cameraController_->Initialze();
+	cameraController_->SetTarget(player_);
+	cameraController_->Reset();	
 	
 }
 
@@ -170,7 +144,7 @@ void GameScene::Update()
 		}
 	}
 
-	debugCamera_->Update();
+	//debugCamera_->Update();
 
 	#ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_0))
@@ -187,9 +161,11 @@ void GameScene::Update()
 		camera_.matProjection = debugCamera_->GetCamera().matProjection;
 		camera_.TransferMatrix();
 	} else 
-	{
+	{	
+		camera_.matView = cameraController_->GetViewProjecttion().matView;
+		camera_.matProjection = cameraController_->GetViewProjecttion().matProjection;
 		//ビュープロジェクション行列の更新と転送
-		camera_.UpdateMatrix();
+		camera_.TransferMatrix();
 	}
 
 }

@@ -106,6 +106,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="MapChipField.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="MyMath.h" />
     <ClInclude Include="Skydome.h" />
     <ClInclude Include="MapChipField.h" />
+    <ClInclude Include="CameraController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

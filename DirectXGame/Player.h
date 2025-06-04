@@ -34,6 +34,9 @@ public:
 	
 	LRDirection lirDirection_ = LRDirection::kRight;
 
+	const KamataEngine::WorldTransform& GetWorldTransform() const
+	{ return worldTransform_;}
+
 	// 初期化
 	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position);
 

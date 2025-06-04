@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Skydome.h"
 #include "MapChipField.h"
+#include "CameraController.h"
 
 
 class GameScene {
@@ -57,6 +58,11 @@ public:
 	
 	//3D
 	KamataEngine::Model* cube_ = nullptr;
+
+	//カメラコントロール
+	CameraController* cameraController_ = nullptr;
+	//void Initialize();
+	//KamataEngine::Model* cameraModel_;
 
 
 	//デストラクタ
