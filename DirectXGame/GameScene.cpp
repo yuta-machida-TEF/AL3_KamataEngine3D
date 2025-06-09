@@ -47,13 +47,14 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	GenerateBlocks();
 
-	cameraController_->Initialze();
-
 	//カメラコントローラの初期化
 	cameraController_ = new CameraController;
 	cameraController_->Initialze();
 	cameraController_->SetTarget(player_);
 	cameraController_->Reset();	
+	
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	cameraController_->SetMovableArea(cameraArea);
 	
 }
 
@@ -121,6 +122,7 @@ void GameScene::Update()
 	player_->Update();
     //行列を定義バッファに転送
 	//worldTransform_.TransferMatrix();
+	cameraController_->Update();
 
 
 	//ブロックの更新

@@ -8,7 +8,7 @@ public:
 
 	static inline const float kAttenuation = 0.1f;
 
-	static inline const float kLimitRunSpeed = 0.5f;
+	static inline const float kLimitRunSpeed = 2.0f;
 
 	//重力加速度(下方向)
 	static inline const float kGravityAcceleration = 0.5f;
@@ -36,6 +36,8 @@ public:
 
 	const KamataEngine::WorldTransform& GetWorldTransform() const
 	{ return worldTransform_;}
+
+	const KamataEngine::Vector3& GetVelocity() const { return velocity_; }
 
 	// 初期化
 	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position);
