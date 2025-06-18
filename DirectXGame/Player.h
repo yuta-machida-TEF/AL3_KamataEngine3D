@@ -1,14 +1,71 @@
 #pragma once
 #include "KamataEngine.h"
 
+class MapChipField;
+
 class Player {
 public:
+
+	//キャラクターの当たり判定サイズ
+	static inline const float kWidth = 0.8f;
+	static inline const float kHeight = 0.8f;
+
+	// マップチップによるフィールド
+	MapChipField* mapChipField_ = nullptr;
+
+	void SetMapChipField(MapChipField* mapChipField)
+	{
+		mapChipField_ = mapChipField; 
+	}
+
+	//マップとの当たり判定情報
+	struct CollisionMapInfo 
+	{
+		bool ceiling = false;//天井衝突フラグ
+		bool langing = false;//着地フラグ
+		bool hitwall = false;//壁接触フラグ
+		KamataEngine::Vector3 move;//移動量
+	};
+
+   void CheakMapCollision(CollisionMapInfo& info);
+   void CheakMapCollisionUP(CollisionMapInfo& info);//上方向
+   // 3.判定結果を反映して移動させる
+   void CheakMapMove(const CollisionMapInfo& info);
+   // 4.天井に接触している場合の処理
+   void CheakMapCeiling(const CollisionMapInfo& info);
+
+   //6.接地状態の切り替え
+   //着地フラグ
+   
+   
+   //void CheakMapCollisionDown(CollisionMapInfo& info);//下方向
+   //void CheakMapCollisionRight(CollisionMapInfo& info);//右方向
+   //void CheakMapCollisionLeft(CollisionMapInfo& info);//左方向
+   //void CheakMapMove(CollisionMapInfo& info);
+   //void CheakMapCeiling(CollisionMapInfo& info);
+   //void CheakMapWall(CollisionMapInfo& info);
+   //void CheakMapLanding(CollisionMapInfo& info);
+
+
+   //角
+   enum Corner 
+   {
+	   kRightBottom,//右下
+	   kLeftBottom,//左下
+	   kRightTop,//右上
+	   kLeftTop,//左上
+
+	   kNumCorner//要素数
+
+   };
+
+   KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center,Corner corner);
 
 	static inline const float kAccleration = 0.1f;
 
 	static inline const float kAttenuation = 0.1f;
 
-	static inline const float kLimitRunSpeed = 2.0f;
+	static inline const float kLimitRunSpeed = 0.8f;
 
 	//重力加速度(下方向)
 	static inline const float kGravityAcceleration = 0.5f;
@@ -32,7 +89,7 @@ public:
 	//接地状態フラグ
 	bool onGround_ = true;
 	
-	LRDirection lirDirection_ = LRDirection::kRight;
+	LRDirection lrDirection_ = LRDirection::kRight;
 
 	const KamataEngine::WorldTransform& GetWorldTransform() const
 	{ return worldTransform_;}
@@ -42,11 +99,20 @@ public:
 	// 初期化
 	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position);
 
+	void InputMove();
+
 	// 更新
 	void Update();
 
 	// 描画
 	void Draw();
+
+	static inline const float kBlank = 0.9f;
+
+
+	void AnimateTurn();
+
+
 
 private:
 		// ワールド変換データ
@@ -59,5 +125,6 @@ private:
     KamataEngine::Model *model_;
 
 	KamataEngine::Vector3 velocity_ = {}; 
+
 
 };
