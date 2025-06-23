@@ -29,22 +29,22 @@ public:
 
    void CheakMapCollision(CollisionMapInfo& info);
    void CheakMapCollisionUP(CollisionMapInfo& info);//上方向
+   void CheakMapCollisionDown(CollisionMapInfo& info); //下方向
    // 3.判定結果を反映して移動させる
    void CheakMapMove(const CollisionMapInfo& info);
    // 4.天井に接触している場合の処理
    void CheakMapCeiling(const CollisionMapInfo& info);
 
    //6.接地状態の切り替え
+   void CheakMapLanding(const CollisionMapInfo& info);
    //着地フラグ
    
    
-   //void CheakMapCollisionDown(CollisionMapInfo& info);//下方向
    //void CheakMapCollisionRight(CollisionMapInfo& info);//右方向
    //void CheakMapCollisionLeft(CollisionMapInfo& info);//左方向
    //void CheakMapMove(CollisionMapInfo& info);
    //void CheakMapCeiling(CollisionMapInfo& info);
    //void CheakMapWall(CollisionMapInfo& info);
-   //void CheakMapLanding(CollisionMapInfo& info);
 
 
    //角
@@ -73,6 +73,10 @@ public:
 	static inline const float kLimitFallSpeed = 0.4f;
 	//ジャンプ初速(上方向)
 	static inline const float kJumpAcceleration = 1.8f;
+	//着地時の速度減衰率
+	static inline const float kAttenuationLanding = 0.9f;
+	//微小な数値
+	static inline const float kGroundSearchHeight = 0.9f;
 
 	//左右
 	enum class LRDirection {
