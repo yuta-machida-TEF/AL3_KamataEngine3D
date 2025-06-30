@@ -24,24 +24,25 @@ public:
 		bool ceiling = false;//天井衝突フラグ
 		bool langing = false;//着地フラグ
 		bool hitwall = false;//壁接触フラグ
-		KamataEngine::Vector3 move;//移動量
+		KamataEngine::Vector3 move = {}; // 移動量
 	};
 
    void CheakMapCollision(CollisionMapInfo& info);
    void CheakMapCollisionUP(CollisionMapInfo& info);//上方向
    void CheakMapCollisionDown(CollisionMapInfo& info); //下方向
+   void CheakMapCollisionRight(CollisionMapInfo& info);//右方向
+   void CheakMapCollisionLeft(CollisionMapInfo& info);//左方向
    // 3.判定結果を反映して移動させる
    void CheakMapMove(const CollisionMapInfo& info);
    // 4.天井に接触している場合の処理
    void CheakMapCeiling(const CollisionMapInfo& info);
-
+   //5.壁に接触している場合の処理
+   void CheakMapWall(CollisionMapInfo& info);
    //6.接地状態の切り替え
    void CheakMapLanding(const CollisionMapInfo& info);
    //着地フラグ
    
    
-   //void CheakMapCollisionRight(CollisionMapInfo& info);//右方向
-   //void CheakMapCollisionLeft(CollisionMapInfo& info);//左方向
    //void CheakMapMove(CollisionMapInfo& info);
    //void CheakMapCeiling(CollisionMapInfo& info);
    //void CheakMapWall(CollisionMapInfo& info);
@@ -65,18 +66,20 @@ public:
 
 	static inline const float kAttenuation = 0.1f;
 
-	static inline const float kLimitRunSpeed = 0.8f;
+	static inline const float kLimitRunSpeed = 0.5f;
 
 	//重力加速度(下方向)
-	static inline const float kGravityAcceleration = 0.5f;
+	static inline const float kGravityAcceleration = 0.1f;
 	//最大落下速度(下方向)
 	static inline const float kLimitFallSpeed = 0.4f;
 	//ジャンプ初速(上方向)
-	static inline const float kJumpAcceleration = 1.8f;
+	static inline const float kJumpAcceleration = 0.8f;
 	//着地時の速度減衰率
 	static inline const float kAttenuationLanding = 0.9f;
 	//微小な数値
-	static inline const float kGroundSearchHeight = 0.9f;
+	static inline const float kGroundSearchHeight = 0.1f;
+	//着地時の速度減衰率
+	static inline const float kAttenuationWall = 0.9f;
 
 	//左右
 	enum class LRDirection {
