@@ -2,6 +2,7 @@
 #include "GameScene.h"
 #include "Player.h"
 #include "CameraController.h"
+#include "Enemy.h"
 using namespace KamataEngine;
 
 
@@ -59,6 +60,15 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 	//マップチップフィールドの生成と初期化
 	//自キャラの生成と初期化
 	player_->SetMapChipField(mapChipField_);
+
+	//敵
+	enemy_ = new Enemy();
+	model_ = Model::CreateFromOBJ("enemy", true);
+
+	Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(15, 18);
+	enemy_->initialize(model_, &camera_, enemyPostion);
+
+
 }
 
 void GameScene::GenerateBlocks() 
@@ -117,6 +127,8 @@ GameScene::~GameScene() {
 		}
 	    worldTransformBlocks_.clear();
 
+	delete enemy_;
+
 }
 
 void GameScene::Update() 
@@ -127,6 +139,7 @@ void GameScene::Update()
 	//worldTransform_.TransferMatrix();
 	cameraController_->Update();
 
+	enemy_->Update();
 
 	//ブロックの更新
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -201,6 +214,8 @@ void GameScene::Draw() {
 	}
 		
 	skydome_->Draw();
+
+	enemy_->Draw();
 	
 
 	//3Dモデル描画前処理

@@ -7,11 +7,6 @@
 using namespace KamataEngine;
 using namespace MathUtility;
 
-
-
-
-
-
 void Player::Initialize(Model* model, Camera* camera, KamataEngine::Vector3& position) {
 	//NULLポイントチェック
 	assert(model);
