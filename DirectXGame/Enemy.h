@@ -1,5 +1,7 @@
 #pragma once
 
+class Player;
+
 //敵
 class Enemy {
 public:
@@ -10,6 +12,9 @@ public:
 
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 
+	// 衝突応答
+	void OnCollision(const Player* player);
+
 	// マップとの当たり判定情報
 	struct CollisionMapInfo {
 		bool ceiling = false;            // 天井衝突フラグ
@@ -17,8 +22,6 @@ public:
 		bool hitwall = false;            // 壁接触フラグ
 		KamataEngine::Vector3 move = {}; // 移動量
 	};
-
-
 
 	//速度
 	KamataEngine::Vector3 velocity_ = {};
@@ -36,19 +39,8 @@ public:
 	//経過時間
 	float walkTimer_ = 0.0f;
 
-	//void CheakMapCollision(CollisionMapInfo& info);
-	//void CheakMapCollisionUP(CollisionMapInfo& info);    // 上方向
-	//void CheakMapCollisionDown(CollisionMapInfo& info);  // 下方向
-	//void CheakMapCollisionRight(CollisionMapInfo& info); // 右方向
-	//void CheakMapCollisionLeft(CollisionMapInfo& info);  // 左方向
-
-	//// 4.天井に接触している場合の処理
-	//void CheakMapCeiling(const CollisionMapInfo& info);
-	//// 5.壁に接触している場合の処理
-	//void CheakMapWall(CollisionMapInfo& info);
-	//// 6.接地状態の切り替え
-	//void CheakMapLanding(const CollisionMapInfo& info);
-
+	// AABBを取得
+	AABB GetAABB();
 
 	void initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position);
 	void Update();

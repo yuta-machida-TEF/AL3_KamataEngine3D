@@ -36,6 +36,9 @@ public:
 	//モデルプレイヤー
 	KamataEngine::Model* modelPlayer_ = nullptr;
 
+	//敵のモデル
+	KamataEngine::Model* modelEnemy_ = nullptr;
+
 	// ワールドトランスフォーム
 	KamataEngine::WorldTransform worldTransform_;
 
@@ -52,7 +55,9 @@ public:
 	Skydome* skydome_ = nullptr;
 
 	// 敵
-	Enemy* enemy_ = nullptr; 
+	//Enemy* enemy_ = nullptr; 
+
+	std::list<Enemy*> enemies_;
 
 	// マップチップフィールド
 	MapChipField* mapChipField_;
@@ -68,6 +73,8 @@ public:
 	//void Initialize();
 	//KamataEngine::Model* cameraModel_;
 
+	//全ての当たり判定を行う
+	void CheckAllCollisions();
 
 	//デストラクタ
 	~GameScene();

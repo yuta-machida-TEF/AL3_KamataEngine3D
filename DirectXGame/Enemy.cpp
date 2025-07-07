@@ -8,8 +8,9 @@ using namespace KamataEngine;
 using namespace MathUtility;
 #include "Enemy.h"
 
-void Enemy::initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position) 
-{
+
+
+void Enemy::initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position) {
 	// NULLポイントチェック
 	assert(model);
 
@@ -34,22 +35,7 @@ void Enemy::initialize(KamataEngine::Model* model, KamataEngine::Camera* camera,
 
 void Enemy::Update() 
 {
-	// void Enemy::CheakMapCollision(CollisionMapInfo& info) {}
-	//
-	// void Enemy::CheakMapCollisionUP(CollisionMapInfo& info) {}
-	//
-	// void Enemy::CheakMapCollisionDown(CollisionMapInfo& info) {}
-	//
-	// void Enemy::CheakMapCollisionRight(CollisionMapInfo& info) {}
-	//
-	// void Enemy::CheakMapCollisionLeft(CollisionMapInfo& info) {}
-	//
-	// void Enemy::CheakMapCeiling(const CollisionMapInfo& info) {}
-	//
-	// void Enemy::CheakMapWall(CollisionMapInfo& info) {}
-
-	// void Enemy::CheakMapLanding(const CollisionMapInfo& info) {}
-
+	
 	//移動
 	worldTransform_.translation_ += velocity_;
 
@@ -63,6 +49,13 @@ void Enemy::Update()
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 	worldTransform_.TransferMatrix(); // プレイヤーの座標の計算
 
+}
+
+AABB Enemy::GetAABB() { return AABB(); }
+
+void Enemy::OnCollision(const Player* player) 
+{ 
+	(void)player; 
 }
 
 void Enemy::Draw() 

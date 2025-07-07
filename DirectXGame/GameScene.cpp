@@ -23,6 +23,8 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 	//3Dモデルデータの生成
 	model_ = Model::CreateFromOBJ("player", true);
 
+	modelEnemy_ = Model::CreateFromOBJ("enemy", true);
+
 	// 自キャラの生成
 	player_ = new Player();
 
@@ -62,13 +64,15 @@ void GameScene::Initialize() {//h(ヘッターファイル)にいれる
 	player_->SetMapChipField(mapChipField_);
 
 	//敵
-	enemy_ = new Enemy();
-	model_ = Model::CreateFromOBJ("enemy", true);
+	for (int32_t i = 0; i < 3; i++) 
+	{
+		Enemy* newEnemy = new Enemy();
+		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(15,16 + i);
+		newEnemy->initialize(modelEnemy_, &camera_, enemyPostion);
+		
+		enemies_.push_back(newEnemy);
 
-	Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(15, 18);
-	enemy_->initialize(model_, &camera_, enemyPostion);
-
-
+	}
 }
 
 void GameScene::GenerateBlocks() 
@@ -103,6 +107,32 @@ void GameScene::GenerateBlocks()
 }
 
 
+void GameScene::CheckAllCollisions() 
+{
+	#pragma region
+	//判定対象1と2の座標
+	AABB aabb1, aabb2;
+
+	//自キャラの座標
+	aabb1 = player_->GetAABB();
+
+	//自キャラと敵弾全ての当たり判定
+	for(Enemy* enemy : enemies_) 
+	{
+		aabb2 = enemy->GetAABB();
+
+		//AABB同士の交差判定
+		if(IsCollision(aabb1,aabb2)) 
+		{
+			//自キャラの衝突時間数を呼び出す
+			player_->OnCollision(enemy);
+			//敵の衝突時間関数を呼び出す
+			enemy->OnCollision(player_);
+		}
+	}
+	#pragma endregion
+}
+
 GameScene::~GameScene() {
 	delete sprite_;
 
@@ -127,7 +157,11 @@ GameScene::~GameScene() {
 		}
 	    worldTransformBlocks_.clear();
 
-	delete enemy_;
+	//delete enemy_;
+	    for(Enemy* enemy : enemies_) 
+		{
+		    delete enemy;
+	    }
 
 }
 
@@ -139,7 +173,12 @@ void GameScene::Update()
 	//worldTransform_.TransferMatrix();
 	cameraController_->Update();
 
-	enemy_->Update();
+	for(Enemy* enemy : enemies_) 
+	{
+		enemy->Update();
+	}
+
+	CheckAllCollisions();
 
 	//ブロックの更新
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -215,7 +254,11 @@ void GameScene::Draw() {
 		
 	skydome_->Draw();
 
-	enemy_->Draw();
+	for (Enemy* enemy : enemies_) 
+	{
+		enemy->Draw();
+	}
+	
 	
 
 	//3Dモデル描画前処理

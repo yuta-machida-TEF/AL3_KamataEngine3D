@@ -1,7 +1,10 @@
 #pragma once
 #include "KamataEngine.h"
+#include "MyMath.h"//アフィン変換行列の計算のヘッター
 
 class MapChipField;
+
+class Enmey;
 
 class Player {
 public:
@@ -102,6 +105,15 @@ public:
 	{ return worldTransform_;}
 
 	const KamataEngine::Vector3& GetVelocity() const { return velocity_; }
+
+	//ワールド座標を取得
+	KamataEngine::Vector3 GetWorldPosition();
+
+	//AABBを取得
+	AABB GetAABB();
+
+	//衝突応答
+	void OnCollision(const Enemy* enemy);
 
 	// 初期化
 	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position);
