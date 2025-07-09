@@ -1,15 +1,11 @@
 #define NOMINMAX
-#include "MyMath.h"//アフィン変換行列の計算のヘッター
-#include "Player.h"
 #include "MapChipField.h"
-#include<numbers>
-#include<algorithm>
+#include "Player.h"
+#include <algorithm>
+#include <numbers>
 using namespace KamataEngine;
 using namespace MathUtility;
 #include "Enemy.h"
-
-
-
 
 void Enemy::initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position) {
 	// NULLポイントチェック
@@ -31,41 +27,25 @@ void Enemy::initialize(KamataEngine::Model* model, KamataEngine::Camera* camera,
 	worldTransform_.rotation_.y = -std::numbers::pi_v<float> / 2.0f;
 
 	worldTransform_.Initialize();
-
 }
 
-void Enemy::Update() 
-{
-	
-	//移動
+void Enemy::Update() {
+
+	// 移動
 	worldTransform_.translation_ += velocity_;
 
-	//タイマーを加算
+	// タイマーを加算
 	walkTimer_ += 5.0f / 60.0f;
 
-	//回転アニメーション
+	// 回転アニメーション
 	worldTransform_.rotation_.x = std::sin(walkTimer_);
 
-		 // アフィン変換行列
+	// アフィン変換行列
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 	worldTransform_.TransferMatrix(); // プレイヤーの座標の計算
-
 }
 
-Vector3 Player::GetWorldPosition() {
-	// ワールド座標を入れる変数
-	Vector3 worldPos;
-	// ワールド行列の平行移動成分を取得(ワールド座標)
-	worldPos.x = worldTransform_.matWorld_.m[3][0];
-	worldPos.y = worldTransform_.matWorld_.m[3][1];
-	worldPos.z = worldTransform_.matWorld_.m[3][2];
-
-	return worldPos;
-}
-
-
-AABB Enemy::GetAABB() 
-{ 
+AABB Enemy::GetAABB() {
 	Vector3 worldPos = GetWorldPosition();
 
 	AABB aabb;
@@ -76,14 +56,17 @@ AABB Enemy::GetAABB()
 	return aabb;
 }
 
-void Enemy::OnCollision(const Player* player) 
-{ 
-	(void)player; 
+KamataEngine::Vector3 Enemy::GetWorldPosition() {
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得(ワールド座標)
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
 }
 
-void Enemy::Draw() 
-{
-	model_->Draw(worldTransform_, *camera_ /*textureHandle_*/);
-}
+void Enemy::OnCollision(const Player* player) { (void)player; }
 
-
+void Enemy::Draw() { model_->Draw(worldTransform_, *camera_ /*textureHandle_*/); }

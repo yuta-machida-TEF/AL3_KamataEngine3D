@@ -1,19 +1,18 @@
 #pragma once
-
 #include "KamataEngine.h"
 
 //<summary>
-//アフィン変換
+// アフィン変換
 //</summary>
-KamataEngine::Matrix4x4 MakeAffineMatrix(KamataEngine::Vector3& scale,
-KamataEngine::Vector3& roteaion, KamataEngine::Vector3& translation);
-//イージング
+KamataEngine::Matrix4x4 MakeAffineMatrix(KamataEngine::Vector3& scale, KamataEngine::Vector3& roteaion, KamataEngine::Vector3& translation);
+// イージング
 float EaseInOut(float x1, float x2, float t);
 
-struct AABB 
-{
+// AABB
+struct AABB {
 	KamataEngine::Vector3 min;
 	KamataEngine::Vector3 max;
 };
 
+// 衝突判定
 bool IsCollision(const AABB& aabb1, const AABB& aabb2);

@@ -12,7 +12,7 @@ public:
 private:
 	// ワールド変換データ
 	KamataEngine::WorldTransform worldTransform_;
-	
+
 	// モデル
 	KamataEngine::Camera* camera_;
 
