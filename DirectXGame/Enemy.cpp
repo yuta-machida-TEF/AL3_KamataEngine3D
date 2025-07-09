@@ -10,6 +10,7 @@ using namespace MathUtility;
 
 
 
+
 void Enemy::initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position) {
 	// NULLポイントチェック
 	assert(model);
