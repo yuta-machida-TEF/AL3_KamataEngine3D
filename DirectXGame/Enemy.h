@@ -9,6 +9,9 @@ public:
 	// マップチップによるフィールド
 	MapChipField* mapChipField_ = nullptr;
 
+	// キャラクターの当たり判定サイズ
+	static inline const float kWidth = 0.8f;
+	static inline const float kHeight = 0.8f;
 
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 
@@ -41,6 +44,9 @@ public:
 
 	// AABBを取得
 	AABB GetAABB();
+
+	// ワールド座標を取得
+	KamataEngine::Vector3 GetWorldPosition();
 
 	void initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position);
 	void Update();

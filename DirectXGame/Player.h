@@ -4,7 +4,7 @@
 
 class MapChipField;
 
-class Enmey;
+class Enemy;
 
 class Player {
 public:
