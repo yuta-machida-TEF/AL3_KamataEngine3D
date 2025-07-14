@@ -107,6 +107,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CameraController.cpp" />
+    <ClCompile Include="DeathParticles.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="MapChipField.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="DeathParticles.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

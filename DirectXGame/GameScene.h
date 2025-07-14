@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Skydome.h"
 #include <vector>
+#include "DeathParticles.h"
 
 class GameScene {
 public:
@@ -36,6 +37,9 @@ public:
 
 	// 敵のモデル
 	KamataEngine::Model* modelEnemy_ = nullptr;
+
+	//パーティクル
+	KamataEngine::Model* modelDeath_ = nullptr; 
 
 	// ワールドトランスフォーム
 	KamataEngine::WorldTransform worldTransform_;
@@ -70,6 +74,8 @@ public:
 	CameraController* cameraController_ = nullptr;
 	// void Initialize();
 	// KamataEngine::Model* cameraModel_;
+
+	DeathParticles* deathParticles_ = nullptr;
 
 	// 全ての当たり判定を行う
 	void CheckAllCollisions();

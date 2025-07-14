@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "MyMath.h"
 #include "Player.h"
+#include "DeathParticles.h"
 using namespace KamataEngine;
 
 void GameScene::Initialize() { // h(ヘッターファイル)にいれる
@@ -22,6 +23,8 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	model_ = Model::CreateFromOBJ("player", true);
 
 	modelEnemy_ = Model::CreateFromOBJ("enemy", true);
+
+	modelDeath_ = Model::CreateFromOBJ("deathParticle", true);
 
 	// 自キャラの生成
 	player_ = new Player();
@@ -69,6 +72,12 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
 		enemies_.push_back(newEnemy);
 	}
+
+	//仮の生成処理。後で削除
+	deathParticles_ = new DeathParticles;
+	Vector3 playerDeath = mapChipField_->GetMapChipPositionByIndex(1, 18);
+	deathParticles_->Initialize(modelDeath_, &camera_, playerDeath);
+
 }
 
 void GameScene::GenerateBlocks() {
@@ -202,6 +211,12 @@ void GameScene::Update() {
 		// ビュープロジェクション行列の更新と転送
 		camera_.TransferMatrix();
 	}
+
+	if(deathParticles_) 
+	{
+		deathParticles_->Update();
+	}
+
 }
 
 void GameScene::Draw() {
@@ -231,6 +246,11 @@ void GameScene::Draw() {
 
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
+	}
+
+	if (deathParticles_) 
+	{
+		deathParticles_->Draw();
 	}
 
 	// 3Dモデル描画前処理
