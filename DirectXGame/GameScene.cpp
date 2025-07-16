@@ -32,7 +32,7 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	mapChipField_ = new MapChipField;
 
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 18);
 	player_->Initialize(model_, &camera_, playerPosition);
 
 	// ワールドトランスフォームの初期化
@@ -75,7 +75,7 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
 	//仮の生成処理。後で削除
 	deathParticles_ = new DeathParticles;
-	Vector3 playerDeath = mapChipField_->GetMapChipPositionByIndex(1, 18);
+	Vector3 playerDeath = mapChipField_->GetMapChipPositionByIndex(2, 18);
 	deathParticles_->Initialize(modelDeath_, &camera_, playerDeath);
 
 }
