@@ -80,6 +80,23 @@ public:
 	// 全ての当たり判定を行う
 	void CheckAllCollisions();
 
+	// ゲームのフェーズ(型)
+	enum class Phase {
+		kPlay,  // ゲームプレイ
+		kDeath, // デス演出
+	};
+
+		// デスフラグ
+	bool isDead_ = false;
+
+	// デスフラグのgetter
+	bool IsDead() const { return isDead_; }
+
+	// ゲームの現在フェーズ(変数)
+	Phase phase_;
+
+	void ChangePhase();
+
 	// デストラクタ
 	~GameScene();
 

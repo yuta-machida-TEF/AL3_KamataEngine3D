@@ -72,11 +72,9 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
 		enemies_.push_back(newEnemy);
 	}
-
-	//仮の生成処理。後で削除
-	deathParticles_ = new DeathParticles;
-	Vector3 playerDeath = mapChipField_->GetMapChipPositionByIndex(2, 18);
-	deathParticles_->Initialize(modelDeath_, &camera_, playerDeath);
+	
+	// ゲームプレイフェーズ
+	phase_ = Phase::kPlay;
 
 }
 
@@ -130,6 +128,30 @@ void GameScene::CheckAllCollisions() {
 		}
 	}
 #pragma endregion
+}
+
+void GameScene::ChangePhase() 
+{
+	switch (phase_) {
+	case Phase::kPlay:
+		//ゲームプレイフェーズの処理
+		if(isDead_) 
+		{
+			//死亡演出フェーズに切り替え
+			phase_ = Phase::kDeath;
+			//自キャラの座標を取得
+			const Vector3 deathParticlesPosition = player_->GetWorldPosition();
+
+			// 仮の生成処理。後で削除
+			deathParticles_ = new DeathParticles;
+			//KamataEngine::Vector3 deathParticlesPosition = player_->GetWorldPosition();
+			//deathParticles_->Initialize(modelDeath_, &camera_, deathParticlesPosition);
+		}
+		break;
+	case Phase::kDeath:
+		//デス演出フェーズの処理
+		break;
+	}
 }
 
 GameScene::~GameScene() {
@@ -216,6 +238,17 @@ void GameScene::Update() {
 	{
 		deathParticles_->Update();
 	}
+
+	switch (phase_) 
+	{
+	case Phase::kPlay:
+		//ゲームプレイフェーズの処理
+		break;
+	case Phase::kDeath:
+		//デス演出フェーズの処理
+		break;
+	}
+
 
 }
 

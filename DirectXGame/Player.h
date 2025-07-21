@@ -59,6 +59,9 @@ public:
 
 	};
 
+	// 自キャラ
+	Player* player_ = nullptr;
+
 	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
 
 	static inline const float kAccleration = 0.1f;
@@ -100,6 +103,12 @@ public:
 	const KamataEngine::WorldTransform& GetWorldTransform() const { return worldTransform_; }
 
 	const KamataEngine::Vector3& GetVelocity() const { return velocity_; }
+
+	//デスフラグ
+	bool isDead_ = false;
+
+	//デスフラグのgetter
+	bool IsDead() const { return isDead_; }
 
 	// 衝突応答
 	void OnCollision(const Enemy* enemy);
