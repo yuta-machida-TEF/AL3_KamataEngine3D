@@ -33,6 +33,11 @@ public:
 	//色の数値
 	KamataEngine::Vector4 color_;
 
+	// 終了フラグ
+	bool finished_ = false;
+
+	bool IsFinished() const { return finished_; }
+
 	// 追従対象とカメラの座標の差(オフセット)
 
 private:

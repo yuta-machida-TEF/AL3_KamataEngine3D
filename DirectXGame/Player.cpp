@@ -53,7 +53,14 @@ void Player::Update() {
 	worldTransform_.TransferMatrix(); // プレイヤーの座標の計算
 }
 
-void Player::Draw() { model_->Draw(worldTransform_, *camera_ /*textureHandle_*/); }
+void Player::Draw() 
+{
+	if (isDead_) 
+	{
+		return;
+	}
+	model_->Draw(worldTransform_, *camera_ /*textureHandle_*/);
+}
 
 // 移動入力
 void Player::InputMove() {
@@ -461,8 +468,10 @@ AABB Player::GetAABB() {
 void Player::OnCollision(const Enemy* enemy) {
 	(void)enemy;
 	// ジャンプ開始(仮処理)
-	velocity_ = Vector3(0.0f, 1.0f, 0.0f);
+	//velocity_ = Vector3(0.0f, 1.0f, 0.0f);
+	
+
 
 	// 自キャラの衝突時間数を呼び出す
-	player_->isDead_;
+	isDead_ = true;
 }

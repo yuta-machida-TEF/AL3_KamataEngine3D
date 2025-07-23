@@ -135,21 +135,26 @@ void GameScene::ChangePhase()
 	switch (phase_) {
 	case Phase::kPlay:
 		//ゲームプレイフェーズの処理
-		if(isDead_) 
+		if(player_->IsDead()) 
 		{
 			//死亡演出フェーズに切り替え
 			phase_ = Phase::kDeath;
 			//自キャラの座標を取得
-			const Vector3 deathParticlesPosition = player_->GetWorldPosition();
+			//Vector3 deathParticlesPosition = player_->GetWorldPosition();
 
 			// 仮の生成処理。後で削除
 			deathParticles_ = new DeathParticles;
-			//KamataEngine::Vector3 deathParticlesPosition = player_->GetWorldPosition();
-			//deathParticles_->Initialize(modelDeath_, &camera_, deathParticlesPosition);
+			KamataEngine::Vector3 deathParticlesPosition = player_->GetWorldPosition();
+			deathParticles_->Initialize(modelDeath_, &camera_, deathParticlesPosition);
 		}
 		break;
 	case Phase::kDeath:
 		//デス演出フェーズの処理
+		if (deathParticles_ && deathParticles_->IsFinished()) 
+		{
+			finished_ = true;
+		}
+
 		break;
 	}
 }
@@ -239,6 +244,7 @@ void GameScene::Update() {
 		deathParticles_->Update();
 	}
 
+	ChangePhase();
 	switch (phase_) 
 	{
 	case Phase::kPlay:

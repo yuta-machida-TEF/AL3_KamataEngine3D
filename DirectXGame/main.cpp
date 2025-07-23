@@ -1,10 +1,30 @@
 #include <Windows.h>
-
 #include "GameScene.h"
 #include "KamataEngine.h"
+#include "TitleScene.h"
 
 using namespace KamataEngine;                           // usingは、kamataEngineの下に書く
 DirectXCommon* dxCommon = DirectXCommon::GetInstance(); // DirectX12のクラスは、DirectXCommonにする
+                                                        // シーン(型)
+enum class Scene {
+	kUnknown = 0,
+
+	kTitle,
+	kGame,
+};
+
+// 現在シーン(型)
+Scene scene = Scene::kUnknown;
+GameScene* gameScene = nullptr;
+TitleScene* titleScene = nullptr;
+
+void ChangeScene();
+// 終了フラグ
+bool finished_ = false;
+
+void UpdateScene();
+
+void DrawScene();
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
@@ -13,11 +33,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	KamataEngine::Initialize(L"LE2D_22_マチダ_ユウタ_AL3"); // 名前を入れると実行画面の左上に名前が表示される
 
 	// ゲームシーンのインタンス生成
-	GameScene* gameScene = new GameScene();
+	gameScene = new GameScene();
 
 	// ゲームシーンの初期化
 	gameScene->Initialize();
+	scene = Scene::kUnknown;
 
+	
 	// メインループ
 	while (true) {
 		// エンジンの更新
@@ -25,26 +47,98 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 			break;
 		}
 
+		
+	    //シーン切り替え
+		ChangeScene();
+		 //現在シーン更新
+		UpdateScene();
+	
+
 		// ゲームシーンの更新
-		gameScene->Update();
 
 		// 描画開始
 		dxCommon->PreDraw();
 
+		// 現在シーンの描画
+		DrawScene();
+
 		// ゲームシーンの描画
-		gameScene->Draw();
-
 		dxCommon->PostDraw();
-	}
 
+		
+
+		// 最初のシーンの初期化
+		/*scene = Scene::kTitle;
+		titleScene = new TitleScene;
+		titleScene->Initialize();*/
+
+
+		//現在シーン(型)
+		//Scene scene = Scene::kUnknown;
+		
+		//titleScene->Update();
+		
+
+		//titleScene->Draw();
+
+	}
 	// ゲームシーンの解放
 	delete gameScene;
+	delete titleScene;
+	//delete gameScene;
 
 	// nullptrの代入
-	gameScene = nullptr;
+	//gameScene = nullptr;
 
 	// エンジンの終了処理
 	KamataEngine::Finalize();
 
 	return 0;
+}
+
+void ChangeScene() {
+	switch (scene) 
+	{
+	case Scene::kTitle:
+		if(titleScene->IsFinished()) 
+		{
+			//シーン変更
+			scene = Scene::kGame;
+			//旧シーンの解放
+			delete titleScene;
+			titleScene = nullptr;
+			//新シーンの生成と初期化
+			gameScene = new GameScene;
+			gameScene->Initialize();
+		}
+		break;
+	case Scene::kGame:
+
+		if (Input::GetInstance()->PushKey(DIK_SPACE)) 
+		{
+			finished_ = true;
+		}
+
+		break;
+	}
+}
+
+void UpdateScene() {
+	switch (scene) 
+	{
+	case Scene::kTitle:
+
+
+
+		break;
+	case Scene::kGame:
+		break;
+	default:
+		break;
+	}
+}
+
+void DrawScene() 
+{
+    
 }
