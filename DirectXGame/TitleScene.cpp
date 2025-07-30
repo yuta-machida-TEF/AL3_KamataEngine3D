@@ -18,12 +18,12 @@ void TitleScene::Initialize()
 	worldTransform_.Initialize();
 	worldTransformPlayer_.Initialize();
 }
-
+   
 void TitleScene::Update() 
 {
 	if(Input::GetInstance()->PushKey(DIK_SPACE)) 
 	{
-		finished_ = true;
+ 		finished_ = true;
 	}
 }
 
@@ -36,7 +36,7 @@ void TitleScene::Draw()
 	Model::PreDraw(dxCommon->GetCommandList());
 
 	//ここに3Dモデルインタランスの描画処理を記述する
-	model_->Draw(worldTransform_, camera_);
+    model_->Draw(worldTransform_, camera_);
 	modelPlayer_->Draw(worldTransformPlayer_, camera_);
 
 	//3Dモデル描画後処理

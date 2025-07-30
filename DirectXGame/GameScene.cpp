@@ -244,6 +244,12 @@ void GameScene::Update() {
 		deathParticles_->Update();
 	}
 
+	//デスパーティクルが終了したらシーンを終了する
+	if (deathParticles_ && deathParticles_->IsFinished()) 
+	{
+ 		finished_ = true;
+	}
+
 	ChangePhase();
 	switch (phase_) 
 	{

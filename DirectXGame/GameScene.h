@@ -92,11 +92,11 @@ public:
 	// デスフラグのgetter
 	bool IsDead() const { return isDead_; }
 
-	//終了フラグ
-	bool finished_ = false;
-
 	//デスフラグのgetter
 	bool IsFinished() const { return finished_; }
+
+	// 終了フラグ
+	bool finished_ = false;
 
 	// ゲームの現在フェーズ(変数)
 	Phase phase_;

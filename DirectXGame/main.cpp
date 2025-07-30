@@ -34,10 +34,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	// ゲームシーンのインタンス生成
 	gameScene = new GameScene();
-
+	titleScene = new TitleScene();
 	// ゲームシーンの初期化
 	gameScene->Initialize();
-	scene = Scene::kUnknown;
+	titleScene->Initialize();
+	scene = Scene::kTitle;
 
 	
 	// メインループ
@@ -52,7 +53,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		ChangeScene();
 		 //現在シーン更新
 		UpdateScene();
-	
+	    
 
 		// ゲームシーンの更新
 
@@ -64,31 +65,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 		// ゲームシーンの描画
 		dxCommon->PostDraw();
-
-		
-
-		// 最初のシーンの初期化
-		/*scene = Scene::kTitle;
-		titleScene = new TitleScene;
-		titleScene->Initialize();*/
-
-
-		//現在シーン(型)
-		//Scene scene = Scene::kUnknown;
-		
-		//titleScene->Update();
-		
-
-		//titleScene->Draw();
-
 	}
 	// ゲームシーンの解放
 	delete gameScene;
 	delete titleScene;
-	//delete gameScene;
-
-	// nullptrの代入
-	//gameScene = nullptr;
+	
 
 	// エンジンの終了処理
 	KamataEngine::Finalize();
@@ -113,12 +94,17 @@ void ChangeScene() {
 		}
 		break;
 	case Scene::kGame:
-
-		if (Input::GetInstance()->PushKey(DIK_SPACE)) 
+		if (gameScene->IsFinished()) 
 		{
-			finished_ = true;
+			//シーン変更
+			scene = Scene::kTitle;
+			//旧シーンの解放
+			delete gameScene;
+			gameScene = nullptr;
+			//新シーンの生成と初期化
+			titleScene = new TitleScene;
+			titleScene->Initialize();
 		}
-
 		break;
 	}
 }
@@ -128,17 +114,33 @@ void UpdateScene() {
 	{
 	case Scene::kTitle:
 
-
+		titleScene->Update();
 
 		break;
 	case Scene::kGame:
+
+		gameScene->Update();
 		break;
-	default:
+	case Scene::kUnknown:
+		titleScene->Draw();
 		break;
 	}
 }
 
 void DrawScene() 
 {
-    
+	switch (scene) {
+	case Scene::kTitle:
+
+		titleScene->Draw();
+
+		break;
+	case Scene::kGame:
+
+		gameScene->Draw();
+		break;
+	case Scene::kUnknown:
+		titleScene->Draw();
+		break;
+	}
 }

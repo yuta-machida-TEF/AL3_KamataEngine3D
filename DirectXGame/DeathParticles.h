@@ -24,8 +24,7 @@ public:
 	static inline const float kSpeed = 0.3f;
     //分割した1個分の角度
 	static inline const float kAngleUnit = 2.0f * kNumParticles / 8.0f;
-	//終了フラグ
-	bool isFinished_ = false;
+	
 	//経過時間カウント
 	float counter_ = 0.0f;
 	//色変更オブジェクト
@@ -34,9 +33,9 @@ public:
 	KamataEngine::Vector4 color_;
 
 	// 終了フラグ
-	bool finished_ = false;
+	bool isFinished_ = false;
 
-	bool IsFinished() const { return finished_; }
+	bool IsFinished() const { return isFinished_; }
 
 	// 追従対象とカメラの座標の差(オフセット)
 
