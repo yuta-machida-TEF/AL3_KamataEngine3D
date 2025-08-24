@@ -7,7 +7,7 @@
 #include "Skydome.h"
 #include <vector>
 #include "DeathParticles.h"
-#include "Fade.h"
+//#include "Fade.h"
 
 class GameScene {
 public:
@@ -105,7 +105,7 @@ public:
 	Phase phase_;
     
 	//フェード
-	Fade* fade_ = nullptr;
+	//Fade* fade_ = nullptr;
 
 	void ChangePhase();
 

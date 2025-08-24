@@ -135,17 +135,17 @@ void GameScene::ChangePhase()
 	switch (phase_) {
 
 	case Phase::kFadeIn:
-		if (fade_->IsFinished()) 
-		{
-			//ゲームプレイへ切り替え
-			phase_ = Phase::kPlay;
-		}
+		/*if (fade_->IsFinished()) 
+		{*/
+			////ゲームプレイへ切り替え
+			//phase_ = Phase::kPlay;
+		//}
 		break;
 	case Phase::kPlay:
 
-		fade_ = new Fade();
+		/*fade_ = new Fade();
 		fade_->Initialize();
-		fade_->Start(Fade::Status::FadeIn, 6.0f);
+		fade_->Start(Fade::Status::FadeIn, 6.0f);*/
 
 		//ゲームプレイフェーズの処理
 		if(player_->IsDead()) 
@@ -170,11 +170,11 @@ void GameScene::ChangePhase()
 		break;
 
 	case Phase::kFadOut:
-		if (fade_->IsFinished()) 
-		{
+		/*if (fade_->IsFinished()) 
+		{*/
 			//シーン終了へ
 			finished_ = true;
-		}
+		//}
 		break;
 	}
 
@@ -196,7 +196,7 @@ GameScene::~GameScene() {
 	// マップチップフィールドの解放
 	delete mapChipField_;
 	//フェード
-	delete fade_;
+	//delete fade_;
 
 
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -225,11 +225,11 @@ void GameScene::Update()
 
     case GameScene::Phase::kFadeIn:
 		//フェード
-		fade_->Update();
+		//fade_->Update();
 		break;
 	case GameScene::Phase::kFadOut:
 		//フェード	
-	    fade_->Update();
+	    //fade_->Update();
 		break;
 	default:
 		break;
@@ -296,7 +296,7 @@ void GameScene::Update()
 	if (deathParticles_ && deathParticles_->IsFinished()) 
 	{
 		phase_ = Phase::kFadOut;
-		fade_->Start(Fade::Status::FadeOut, 1.0f);
+		//fade_->Start(Fade::Status::FadeOut, 1.0f);
 	}
 
 	ChangePhase();
@@ -353,6 +353,6 @@ void GameScene::Draw() {
 	// 3Dモデル描画前処理
 	Model::PostDraw(); // プログラムの終了
 
-	fade_->Draw();
+	//fade_->Draw();
 
 }
