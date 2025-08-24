@@ -7,6 +7,7 @@
 #include "Skydome.h"
 #include <vector>
 #include "DeathParticles.h"
+#include "Fade.h"
 
 class GameScene {
 public:
@@ -82,8 +83,10 @@ public:
 
 	// ゲームのフェーズ(型)
 	enum class Phase {
+		kFadeIn,//フェードイン
 		kPlay,  // ゲームプレイ
 		kDeath, // デス演出
+		kFadOut,//フェードアウト
 	};
 
 		// デスフラグ
@@ -100,6 +103,9 @@ public:
 
 	// ゲームの現在フェーズ(変数)
 	Phase phase_;
+    
+	//フェード
+	Fade* fade_ = nullptr;
 
 	void ChangePhase();
 

@@ -133,7 +133,20 @@ void GameScene::CheckAllCollisions() {
 void GameScene::ChangePhase() 
 {
 	switch (phase_) {
+
+	case Phase::kFadeIn:
+		if (fade_->IsFinished()) 
+		{
+			//ゲームプレイへ切り替え
+			phase_ = Phase::kPlay;
+		}
+		break;
 	case Phase::kPlay:
+
+		fade_ = new Fade();
+		fade_->Initialize();
+		fade_->Start(Fade::Status::FadeIn, 6.0f);
+
 		//ゲームプレイフェーズの処理
 		if(player_->IsDead()) 
 		{
@@ -154,9 +167,18 @@ void GameScene::ChangePhase()
 		{
 			finished_ = true;
 		}
+		break;
 
+	case Phase::kFadOut:
+		if (fade_->IsFinished()) 
+		{
+			//シーン終了へ
+			finished_ = true;
+		}
 		break;
 	}
+
+
 }
 
 GameScene::~GameScene() {
@@ -173,6 +195,9 @@ GameScene::~GameScene() {
 
 	// マップチップフィールドの解放
 	delete mapChipField_;
+	//フェード
+	delete fade_;
+
 
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -187,7 +212,30 @@ GameScene::~GameScene() {
 	}
 }
 
-void GameScene::Update() {
+void GameScene::Update() 
+{
+	
+
+	switch (phase_) {
+	case GameScene::Phase::kPlay:
+		break;
+
+	case GameScene::Phase::kDeath:
+		break;
+
+    case GameScene::Phase::kFadeIn:
+		//フェード
+		fade_->Update();
+		break;
+	case GameScene::Phase::kFadOut:
+		//フェード	
+	    fade_->Update();
+		break;
+	default:
+		break;
+	}
+	
+	
 	// 自キャラの更新
 	player_->Update();
 	// 行列を定義バッファに転送
@@ -247,7 +295,8 @@ void GameScene::Update() {
 	//デスパーティクルが終了したらシーンを終了する
 	if (deathParticles_ && deathParticles_->IsFinished()) 
 	{
- 		finished_ = true;
+		phase_ = Phase::kFadOut;
+		fade_->Start(Fade::Status::FadeOut, 1.0f);
 	}
 
 	ChangePhase();
@@ -276,7 +325,10 @@ void GameScene::Draw() {
 	// model_->Draw(worldTransform_, camera_, textureHandle_);
 
 	// 自キャラの描画
-	player_->Draw();
+	if (phase_ == Phase::kPlay || phase_ == Phase::kFadeIn) 
+	{
+		player_->Draw();
+	}
 
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -300,4 +352,7 @@ void GameScene::Draw() {
 
 	// 3Dモデル描画前処理
 	Model::PostDraw(); // プログラムの終了
+
+	fade_->Draw();
+
 }

@@ -20,17 +20,43 @@ void TitleScene::Initialize()
 	worldTransformPlayer_.Initialize();
 
 	fade_ = new Fade();
-	//fade_->Initialize();
+	fade_->Initialize();
+	fade_->Start(Fade::Status::FadeIn, 6.0f);
+
 }
    
+TitleScene::~TitleScene()
+{
+	delete fade_; 
+}
+
+
 void TitleScene::Update() 
 {
-	if(Input::GetInstance()->PushKey(DIK_SPACE)) 
-	{
- 		finished_ = true;
+	fade_->Update();
+	switch (phase_) {
+	case TitleScene::Phase::kFadeIn:
+		if (Input::GetInstance()->PushKey(DIK_SPACE)) {
+			phase_ = Phase::kFadeOut;
+			fade_->Start(Fade::Status::FadeOut, 1.0f);
+		}
+		break;
+	case TitleScene::Phase::kMain:
+		//フェード
+		fade_->Update();
+		if(fade_->IsFinished()) 
+		{
+			phase_ = Phase::kMain;
+		}
+		break;
+	case TitleScene::Phase::kFadeOut:
+		fade_->Update();
+		if (fade_->IsFinished()) 
+		{
+			finished_ = true;
+		}
+		break;
 	}
-
-	//fade_->Update();
 
 }
 
@@ -49,4 +75,5 @@ void TitleScene::Draw()
 	//3Dモデル描画後処理
 	Model::PostDraw();
 
+	fade_->Draw();
 }

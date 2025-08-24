@@ -11,6 +11,9 @@ public:
 	void Update();
 	void Draw();
 
+	~TitleScene();
+
+
 	//終了フラグ
 	bool finished_ = false;
 	//デスフラグのgetter
@@ -27,10 +30,19 @@ public:
 	
 	KamataEngine::WorldTransform worldTransformPlayer_;
 
-  
-private:
+ 
+	Fade* fade_ = nullptr;
 
-	Fade* fade_ = nullptr; 
+	//シーンのフェーズ
+	enum class Phase
+	{
+		kFadeIn,//フェードイン
+		kMain,//メイン部
+		kFadeOut,//フェーズアウト
+	};
+
+	//現在のフェーズ
+	Phase phase_ = Phase::kFadeIn;
 
 };
 
