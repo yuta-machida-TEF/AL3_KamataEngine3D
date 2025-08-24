@@ -5,6 +5,7 @@
 using namespace KamataEngine;
 using namespace MathUtility;
 
+
 void TitleScene::Initialize() 
 {
 	//3Dモデルの生成
@@ -17,6 +18,9 @@ void TitleScene::Initialize()
 	//ワールド変換の初期化
 	worldTransform_.Initialize();
 	worldTransformPlayer_.Initialize();
+
+	fade_ = new Fade();
+	//fade_->Initialize();
 }
    
 void TitleScene::Update() 
@@ -25,6 +29,9 @@ void TitleScene::Update()
 	{
  		finished_ = true;
 	}
+
+	//fade_->Update();
+
 }
 
 //描画

@@ -1,5 +1,7 @@
 #pragma once
+#include "Fade.h"
 #include "KamataEngine.h"
+
 
 //タイトルシーン
 class TitleScene{
@@ -25,8 +27,10 @@ public:
 	
 	KamataEngine::WorldTransform worldTransformPlayer_;
 
-
-
+  
 private:
+
+	Fade* fade_ = nullptr; 
+
 };
 
