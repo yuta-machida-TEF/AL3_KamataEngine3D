@@ -196,7 +196,7 @@ GameScene::~GameScene() {
 	// マップチップフィールドの解放
 	delete mapChipField_;
 	//フェード
-	//delete fade_;
+	delete fade_;
 
 
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -210,12 +210,19 @@ GameScene::~GameScene() {
 	for (Enemy* enemy : enemies_) {
 		delete enemy;
 	}
+
+	// ゲームプレイフェーズ
+	phase_ = Phase::kFadeIn;
+
+	fade_ = new Fade();
+	fade_->Initialize();
+	fade_->Start(Fade::Status::FadeIn, 6.0f);
 }
 
 void GameScene::Update() 
 {
-	
-
+	// フェード
+	fade_->Update();
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
 		break;
@@ -296,7 +303,7 @@ void GameScene::Update()
 	if (deathParticles_ && deathParticles_->IsFinished()) 
 	{
 		phase_ = Phase::kFadOut;
-		//fade_->Start(Fade::Status::FadeOut, 1.0f);
+		fade_->Start(Fade::Status::FadeOut, 1.0f);
 	}
 
 	ChangePhase();
@@ -319,6 +326,8 @@ void GameScene::Draw() {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	Model::PreDraw(dxCommon->GetCommandList());
+
+	fade_->Draw();
 
 	// 3Dモデル描画
 	//
@@ -352,7 +361,5 @@ void GameScene::Draw() {
 
 	// 3Dモデル描画前処理
 	Model::PostDraw(); // プログラムの終了
-
-	//fade_->Draw();
 
 }

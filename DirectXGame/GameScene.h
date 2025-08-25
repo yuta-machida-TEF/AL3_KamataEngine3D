@@ -7,7 +7,7 @@
 #include "Skydome.h"
 #include <vector>
 #include "DeathParticles.h"
-//#include "Fade.h"
+#include "Fade.h"
 
 class GameScene {
 public:
@@ -102,10 +102,10 @@ public:
 	bool finished_ = false;
 
 	// ゲームの現在フェーズ(変数)
-	Phase phase_;
+	Phase phase_ = Phase::kFadeIn;
     
 	//フェード
-	//Fade* fade_ = nullptr;
+	Fade* fade_ = nullptr;
 
 	void ChangePhase();
 

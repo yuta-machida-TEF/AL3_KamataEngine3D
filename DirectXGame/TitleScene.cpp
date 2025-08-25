@@ -19,6 +19,9 @@ void TitleScene::Initialize()
 	worldTransform_.Initialize();
 	worldTransformPlayer_.Initialize();
 
+	//ゲームプレイフェーズ
+	phase_ = Phase::kFadeIn;
+
 	fade_ = new Fade();
 	fade_->Initialize();
 	fade_->Start(Fade::Status::FadeIn, 6.0f);
@@ -42,15 +45,13 @@ void TitleScene::Update()
 		}
 		break;
 	case TitleScene::Phase::kMain:
-		//フェード
-		fade_->Update();
+		
 		if(fade_->IsFinished()) 
 		{
 			phase_ = Phase::kMain;
 		}
 		break;
 	case TitleScene::Phase::kFadeOut:
-		fade_->Update();
 		if (fade_->IsFinished()) 
 		{
 			finished_ = true;
