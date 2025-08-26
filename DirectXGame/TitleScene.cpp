@@ -19,7 +19,7 @@ void TitleScene::Initialize()
 	worldTransform_.Initialize();
 	worldTransformPlayer_.Initialize();
 
-	//ゲームプレイフェーズ
+	// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;
 
 	fade_ = new Fade();
@@ -30,7 +30,7 @@ void TitleScene::Initialize()
    
 TitleScene::~TitleScene()
 {
-	delete fade_; 
+	delete fade_;
 }
 
 

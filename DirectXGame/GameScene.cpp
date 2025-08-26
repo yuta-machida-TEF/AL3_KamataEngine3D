@@ -72,10 +72,13 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
 		enemies_.push_back(newEnemy);
 	}
-	
-	// ゲームプレイフェーズ
-	phase_ = Phase::kPlay;
 
+		// ゲームプレイフェーズ
+	phase_ = Phase::kFadeIn;
+
+	fade_ = new Fade();
+	fade_->Initialize();
+	fade_->Start(Fade::Status::FadeIn, 2.0f);
 }
 
 void GameScene::GenerateBlocks() {
@@ -132,14 +135,15 @@ void GameScene::CheckAllCollisions() {
 
 void GameScene::ChangePhase() 
 {
+
 	switch (phase_) {
 
 	case Phase::kFadeIn:
-		/*if (fade_->IsFinished()) 
-		{*/
-			////ゲームプレイへ切り替え
-			//phase_ = Phase::kPlay;
-		//}
+		if (fade_->IsFinished()) 
+		{
+			//ゲームプレイへ切り替え
+			phase_ = Phase::kPlay;
+		}
 		break;
 	case Phase::kPlay:
 
@@ -165,16 +169,17 @@ void GameScene::ChangePhase()
 		//デス演出フェーズの処理
 		if (deathParticles_ && deathParticles_->IsFinished()) 
 		{
-			finished_ = true;
+			fade_->Start(Fade::Status::FadeOut, 2.0f);
+			phase_ = Phase::kFadOut;
 		}
 		break;
 
 	case Phase::kFadOut:
-		/*if (fade_->IsFinished()) 
-		{*/
+		if (fade_->IsFinished()) 
+		{
 			//シーン終了へ
 			finished_ = true;
-		//}
+		}
 		break;
 	}
 
@@ -198,7 +203,6 @@ GameScene::~GameScene() {
 	//フェード
 	delete fade_;
 
-
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			delete worldTransformBlock;
@@ -211,12 +215,6 @@ GameScene::~GameScene() {
 		delete enemy;
 	}
 
-	// ゲームプレイフェーズ
-	phase_ = Phase::kFadeIn;
-
-	fade_ = new Fade();
-	fade_->Initialize();
-	fade_->Start(Fade::Status::FadeIn, 6.0f);
 }
 
 void GameScene::Update() 
@@ -300,11 +298,11 @@ void GameScene::Update()
 	}
 
 	//デスパーティクルが終了したらシーンを終了する
-	if (deathParticles_ && deathParticles_->IsFinished()) 
+	/*if (deathParticles_ && deathParticles_->IsFinished()) 
 	{
 		phase_ = Phase::kFadOut;
 		fade_->Start(Fade::Status::FadeOut, 1.0f);
-	}
+	}*/
 
 	ChangePhase();
 	switch (phase_) 
@@ -326,8 +324,6 @@ void GameScene::Draw() {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	Model::PreDraw(dxCommon->GetCommandList());
-
-	fade_->Draw();
 
 	// 3Dモデル描画
 	//
@@ -362,4 +358,5 @@ void GameScene::Draw() {
 	// 3Dモデル描画前処理
 	Model::PostDraw(); // プログラムの終了
 
+	fade_->Draw();
 }

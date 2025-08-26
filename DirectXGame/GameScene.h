@@ -101,11 +101,12 @@ public:
 	// 終了フラグ
 	bool finished_ = false;
 
+	// フェード
+	Fade* fade_ = nullptr;
+
 	// ゲームの現在フェーズ(変数)
 	Phase phase_ = Phase::kFadeIn;
-    
-	//フェード
-	Fade* fade_ = nullptr;
+ 
 
 	void ChangePhase();
 
