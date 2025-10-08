@@ -64,62 +64,17 @@ void Player::Draw()
 
 // 移動入力
 void Player::InputMove() {
-	// 左右移動操作
-	if (onGround_) {
-		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
-
+	
 			// 左右加速
 			Vector3 acceleration = {};
-			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
-				// 左移動中の右入力
-				if (velocity_.x < 0.0f) {
-					// 速度と逆方向に入力中は急ブレーキ
-					velocity_.x *= (1.0f - kAttenuation);
-				}
-				acceleration.x += kAccleration;
-				if (lrDirection_ != LRDirection::kRight) {
-					lrDirection_ = LRDirection::kRight;
-					// 旋回開始時の角度を記録する
-					trunFirstRotationY_ = worldTransform_.rotation_.y;
-					// 旋回タイマーに時間を設定する
-					trunTimer_ = kTimeTurn;
-				}
-			} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
-				// 右移動中の左入力
-				if (velocity_.x > 0.0f) {
-					// 速度と逆方向に入力中は急ブレーキ
-					velocity_.x *= (1.0f - kAttenuation);
-				}
-				acceleration.x -= kAccleration;
-				if (lrDirection_ != LRDirection::kLeft) {
-					lrDirection_ = LRDirection::kLeft;
-					// 旋回開始時の角度を記録する
-					trunFirstRotationY_ = worldTransform_.rotation_.y;
-					// 旋回タイマーに時間を設定する
-					trunTimer_ = kTimeTurn;
-				}
-			}
-			// 加速/減速
-			velocity_ += acceleration;
-			// 最大速度制限
-			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
 
-		} else {
-			// 非入力時は移動減衰をかける
-			velocity_.x *= (1.0f - kAccleration);
-		}
-		if (Input::GetInstance()->PushKey(DIK_UP)) {
-			// ジャンプ初速
-			velocity_ += Vector3(0, kJumpAcceleration, 0);
-		}
-	}
-	// 空中
-	else {
-		// 落下速度
-		velocity_ += Vector3(0, -kGravityAcceleration, 0);
-		// 落下速度制限
-		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
-	}
+			acceleration.x += kAccleration;
+
+			//// 加速/減速
+		    velocity_ += acceleration;
+		    // 最大速度制限
+		    velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+
 }
 
 // 2.マップ衝突チェック
