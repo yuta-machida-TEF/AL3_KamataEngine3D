@@ -64,9 +64,9 @@ public:
 
 	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
 
-	static inline float kAccleration = 0.5f;
+	static inline const float kAccleration = 0.5f;
 
-	static inline const float kAttenuation = 0.1f;
+	static inline  float kAttenuation = 0.1f;
 
 	static inline const float kLimitRunSpeed = 0.2f;
 

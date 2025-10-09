@@ -78,26 +78,22 @@ void Player::InputMove() {
 		velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
 		
 	 } 
-	 else {
-		 // 非入力時は移動減衰をかける
-		 velocity_.x *= (1.0f - kAccleration);
-	 }
   	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 	
 		// ジャンプ初速
 		velocity_ += Vector3(0, kJumpAcceleration, 0);
-		//kAccleration = 2.0f;
-
+		
 	}
 	// 空中
 	else {
+
+		
 
 		// 落下速度
 		velocity_ += Vector3(0, -kGravityAcceleration, 0);
 		// 落下速度制限
 		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
 
-		//kAccleration = 0.5f;
 	}
 	  
 }
