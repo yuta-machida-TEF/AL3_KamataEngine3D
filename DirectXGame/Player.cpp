@@ -65,16 +65,38 @@ void Player::Draw()
 // 移動入力
 void Player::InputMove() {
 	
-			// 左右加速
-			Vector3 acceleration = {};
+	 if (onGround_)
+	 {
+		// 左右加速
+		Vector3 acceleration = {};
 
-			acceleration.x += kAccleration;
+		acceleration.x += kAccleration;
 
-			//// 加速/減速
-		    velocity_ += acceleration;
-		    // 最大速度制限
-		    velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+		//// 加速/減速
+		velocity_ += acceleration;
+		// 最大速度制限
+		velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+		
+	 } 
+	 else {
+		 // 非入力時は移動減衰をかける
+		 velocity_.x *= (1.0f - kAccleration);
+	 }
+  	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+	
+		// ジャンプ初速
+		velocity_ += Vector3(0, kJumpAcceleration, 0);
 
+	}
+	// 空中
+	else {
+
+		// 落下速度
+		velocity_ += Vector3(0, -kGravityAcceleration, 0);
+		// 落下速度制限
+		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
+	}
+	  
 }
 
 // 2.マップ衝突チェック
