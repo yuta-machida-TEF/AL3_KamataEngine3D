@@ -86,6 +86,7 @@ void Player::InputMove() {
 	
 		// ジャンプ初速
 		velocity_ += Vector3(0, kJumpAcceleration, 0);
+		//kAccleration = 2.0f;
 
 	}
 	// 空中
@@ -95,6 +96,8 @@ void Player::InputMove() {
 		velocity_ += Vector3(0, -kGravityAcceleration, 0);
 		// 落下速度制限
 		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
+
+		//kAccleration = 0.5f;
 	}
 	  
 }
