@@ -81,7 +81,7 @@ public:
 	// 微小な数値
 	static inline const float kGroundSearchHeight = 0.1f;
 	// 着地時の速度減衰率
-	static inline const float kAttenuationWall = 0.9f;
+	static inline const float kAttenuationWall = 0.5f;
 
 	// 左右
 	enum class LRDirection {

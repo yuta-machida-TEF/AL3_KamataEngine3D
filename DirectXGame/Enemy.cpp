@@ -32,13 +32,13 @@ void Enemy::initialize(KamataEngine::Model* model, KamataEngine::Camera* camera,
 void Enemy::Update() {
 
 	// 移動
-	worldTransform_.translation_ += velocity_;
+	worldTransform_.translation_ -= velocity_;
 
 	// タイマーを加算
 	walkTimer_ += 5.0f / 60.0f;
 
 	// 回転アニメーション
-	worldTransform_.rotation_.x = std::sin(walkTimer_);
+	//worldTransform_.rotation_.x = std::sin(walkTimer_);
 
 	// アフィン変換行列
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);

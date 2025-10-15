@@ -87,8 +87,6 @@ void Player::InputMove() {
 	// 空中
 	else {
 
-		
-
 		// 落下速度
 		velocity_ += Vector3(0, -kGravityAcceleration, 0);
 		// 落下速度制限
@@ -193,14 +191,14 @@ void Player::CheakMapCollisionDown(CollisionMapInfo& info) {
 	// ブロックにヒット?
 	if (hit) {
 		// めり込みを排除する方向に移動量を設定する
-		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(0, -kHeight / 2.0f, 0));
+		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(0, -kHeight / 4.0f, 0));
 		// 現在座標が壁の外が判定
 		MapChipField::IndexSet indexSetNow;
-		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, -kHeight / 2.0f, 0));
+		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, -kHeight / 4.0f, 0));
 
 		// めり込み先ブロックの範囲短形
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-		info.move.y = std::min(0.0f, rect.top - worldTransform_.translation_.y + (kHeight / 2.0f + kBlank));
+		info.move.y = std::min(0.0f, rect.top - worldTransform_.translation_.y + (kHeight / 4.0f + kBlank));
 		// 地面に当たったことを記録する
 		info.langing = true;
 	}
@@ -410,10 +408,10 @@ void Player::AnimateTurn() {
 
 KamataEngine::Vector3 Player::CornerPosition(const KamataEngine::Vector3& center, Corner corner) {
 	KamataEngine::Vector3 offsetTable[kNumCorner] = {
-	    {+kWidth / 2.0f, -kHeight / 2.0f, 0}, //  kRightBottom
-	    {-kWidth / 2.0f, -kHeight / 2.0f, 0}, //  kLeftBottom
-	    {+kWidth / 2.0f, +kHeight / 2.0f, 0}, //  kRightTop
-	    {-kWidth / 2.0f, +kHeight / 2.0f, 0}  //  kLeftTop
+	    {+kWidth / 2.5f, -kHeight / 2.5f, 0}, //  kRightBottom
+	    {-kWidth / 2.5f, -kHeight / 2.5f, 0}, //  kLeftBottom
+	    {+kWidth / 2.2f, +kHeight / 2.2f, 0}, //  kRightTop
+	    {-kWidth / 2.2f, +kHeight / 2.2f, 0}  //  kLeftTop
 	};
 
 	return center + offsetTable[static_cast<uint32_t>(corner)];

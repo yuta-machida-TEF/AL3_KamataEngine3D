@@ -31,7 +31,7 @@ public:
 	KamataEngine::Vector3 velocity_ = {};
 
 	// 歩行の速さ
-	static inline const float kWalkSpeed = 0.04f;
+	static inline const float kWalkSpeed = 0.15f;
 
 	// 最初の角度[度]
 	static inline const float kWalkMotionAngleStart = 5.0f;
