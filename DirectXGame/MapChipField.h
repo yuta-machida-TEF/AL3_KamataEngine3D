@@ -20,6 +20,8 @@ public:
 
 	MapChipField::IndexSet GetMapChipIndexSetByPosition(const KamataEngine::Vector3& postion);
 
+	MapChipField::IndexSet MapChipIndexByPositionA(const KamataEngine::Vector3& postion);
+
 	MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex);
 
 	KamataEngine::Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);

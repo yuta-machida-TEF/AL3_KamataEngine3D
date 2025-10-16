@@ -39,6 +39,9 @@ public:
 	// 敵のモデル
 	KamataEngine::Model* modelEnemy_ = nullptr;
 
+	//配置の敵のモデル
+	KamataEngine::Model* HaitiEnemy_ = nullptr;
+
 	//パーティクル
 	KamataEngine::Model* modelDeath_ = nullptr; 
 

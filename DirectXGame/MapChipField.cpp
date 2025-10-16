@@ -78,6 +78,15 @@ MapChipField::IndexSet MapChipField::GetMapChipIndexSetByPosition(const Vector3&
 	return indexSet;
 }
 
+MapChipField::IndexSet MapChipField::MapChipIndexByPositionA(const KamataEngine::Vector3& postion) 
+{ 
+    IndexSet indexSetA = {};
+	indexSetA.xIndex = static_cast<uint32_t>((postion.x + kBlockWidth / 2) / kBlockWidth);
+	indexSetA.yIndex = kNumBlockVirtical - 1 - static_cast<uint32_t>((postion.y + kBlockHeight / 2) / kBlockHeight);
+
+	return indexSetA;
+}
+
 // Rectの取得
 MapChipField::Rect MapChipField::GetRectByIndex(uint32_t xIndex, uint32_t yIndex) {
 	// 指定ブロックの中心座標を取得する

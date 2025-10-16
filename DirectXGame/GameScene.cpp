@@ -24,6 +24,8 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
 	modelEnemy_ = Model::CreateFromOBJ("enemy", true);
 
+	HaitiEnemy_ = Model::CreateFromOBJ("enemy", true);
+
 	modelDeath_ = Model::CreateFromOBJ("deathParticle", true);
 
 	// 自キャラの生成
@@ -72,6 +74,13 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	
 		enemies_.push_back(newEnemy);
 	}
+
+	/*Enemy* EnemyA = new Enemy();
+	Vector3 enemyAPostion = mapChipField_->GetMapChipPositionByIndex(70, 12);
+	EnemyA->initialize(modelEnemy_, &camera_, enemyAPostion);
+	
+	enemies_.push_back(EnemyA);*/
+
 
 		// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;

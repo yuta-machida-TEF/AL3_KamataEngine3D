@@ -181,7 +181,6 @@ void Player::CheakMapCollisionDown(CollisionMapInfo& info) {
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
-		velocity_ = -velocity_;
 	}
 	////右下点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightBottom]);
@@ -189,7 +188,6 @@ void Player::CheakMapCollisionDown(CollisionMapInfo& info) {
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex - 1);
 	if (mapChipType == MapChipType::kBlock) {
 		hit = true;
-		//velocity_ = -velocity_;
 	}
 
 	// ブロックにヒット?
@@ -212,7 +210,7 @@ void Player::CheakMapCollisionDown(CollisionMapInfo& info) {
 		// 着地状態に切り替える(落下を止める)
 		onGround_ = true;
 		// 着地時にX速度を減衰
-		velocity_.x *= (1.0f - kAttenuationLanding);
+		//velocity_.x *= (1.0f - kAttenuationLanding);
 		// Y速度をゼロにする
 		velocity_.y = 0.0f;
 	}
@@ -250,7 +248,6 @@ void Player::CheakMapCollisionRight(CollisionMapInfo& info) {
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex - 1, indexSet.yIndex);
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
-		//velocity_ = -velocity_;
 	}
 
 	// ブロックにヒット?
@@ -301,7 +298,6 @@ void Player::CheakMapCollisionLeft(CollisionMapInfo& info) {
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex + 1, indexSet.yIndex);
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
-		//velocity_ = -velocity_;
 	}
 
 	// ブロックにヒット?
