@@ -130,6 +130,7 @@ void Player::CheakMapCollisionUP(CollisionMapInfo& info) {
 	// 隣接セルがともにブロックであればヒット
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
+		
 	}
 	////右上点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
@@ -137,6 +138,7 @@ void Player::CheakMapCollisionUP(CollisionMapInfo& info) {
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex + 1);
 	if (mapChipType == MapChipType::kBlock) {
 		hit = true;
+		
 	}
 
 	// ブロックにヒット
@@ -179,6 +181,7 @@ void Player::CheakMapCollisionDown(CollisionMapInfo& info) {
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
+		velocity_ = -velocity_;
 	}
 	////右下点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightBottom]);
@@ -186,6 +189,7 @@ void Player::CheakMapCollisionDown(CollisionMapInfo& info) {
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex - 1);
 	if (mapChipType == MapChipType::kBlock) {
 		hit = true;
+		//velocity_ = -velocity_;
 	}
 
 	// ブロックにヒット?
@@ -246,6 +250,7 @@ void Player::CheakMapCollisionRight(CollisionMapInfo& info) {
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex - 1, indexSet.yIndex);
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
+		//velocity_ = -velocity_;
 	}
 
 	// ブロックにヒット?
@@ -296,6 +301,7 @@ void Player::CheakMapCollisionLeft(CollisionMapInfo& info) {
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex + 1, indexSet.yIndex);
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
+		//velocity_ = -velocity_;
 	}
 
 	// ブロックにヒット?
