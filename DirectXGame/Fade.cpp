@@ -8,6 +8,7 @@ void Fade::Initialize()
 	textureHandle_ = TextureManager::Load("white1x1.png");
 	//スプライトインスタンスの生成
 	sprite_ = KamataEngine::Sprite::Create(textureHandle_, {0, 0});
+	sprite2_ = KamataEngine::Sprite::Create(gameOverHandle_, {0, 0});
 	sprite_->SetSize(Vector2(1280, 720));//画面サイズ
 	sprite_->SetColor(Vector4{0, 0, 0, 1});//黒色
 }
@@ -93,6 +94,7 @@ void Fade::Draw()
 	}
 	Sprite::PreDraw(dxCommon->GetCommandList()); 
 	sprite_->Draw();
+	sprite2_->Draw();
 	Sprite::PostDraw();
 }
 

@@ -37,10 +37,12 @@ private:
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
-	//ゲームオーバーハンドル
-	uint32_t gameOverHandle = 0;
+
+	uint32_t gameOverHandle_ = 0;
 
 	// スプライト
 	KamataEngine::Sprite* sprite_ = nullptr;
+
+	KamataEngine::Sprite* sprite2_ = nullptr;
 
 };

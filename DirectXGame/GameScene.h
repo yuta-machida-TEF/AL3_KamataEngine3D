@@ -6,7 +6,7 @@
 #include "Player.h"
 #include "Skydome.h"
 #include <vector>
-#include "GameOver.h"
+#include "DeathPartcle.h"
 #include "Fade.h"
 #include "Clear.h"
 
@@ -21,6 +21,9 @@ public:
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
+
+	// ゲームオーバーハンドル
+	uint32_t gameOverHandle_ = 0;
 
 	// デバックカメラ有効
 	bool isDebugCameraActive_ = false;
@@ -58,6 +61,8 @@ public:
 
 	// スプライト
 	KamataEngine::Sprite* sprite_ = nullptr;
+
+	KamataEngine::Sprite* sprite2_ = nullptr;
 
 	// 自キャラ
 	Player* player_ = nullptr;

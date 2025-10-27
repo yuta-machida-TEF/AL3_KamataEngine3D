@@ -73,6 +73,7 @@ void TitleScene::Draw()
 	////3Dモデル描画前処理
 	//Model::PreDraw(dxCommon->GetCommandList());
 
+
 	Sprite::PreDraw(dxCommon->GetCommandList());
 
 	//スプライト描画

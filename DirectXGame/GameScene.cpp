@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "MyMath.h"
 #include "Player.h"
-#include "GameOver.h"
+#include "DeathPartcle.h"
 #include "Clear.h"
 using namespace KamataEngine;
 
@@ -11,7 +11,11 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
 	textureHandle_ = TextureManager::Load("A.png");
 
+	gameOverHandle_ = TextureManager::Load("B.png");
+
 	sprite_ = Sprite::Create(textureHandle_, {100, 50});
+	
+	sprite2_ = Sprite::Create(gameOverHandle_, {100, 50});
 
 	modelskydome_ = Model::CreateFromOBJ("skydome", true);
 
@@ -200,6 +204,8 @@ void GameScene::ChangePhase()
 
 GameScene::~GameScene() {
 	delete sprite_;
+
+	delete sprite2_;
 
 	delete skydome_;
 
