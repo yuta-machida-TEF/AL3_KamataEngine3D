@@ -1,4 +1,4 @@
-#include "DeathParticles.h"
+#include "GameOver.h"
 #include "CameraController.h"
 #include "MyMath.h" //アフィン変換行列の計算のヘッター
 #include <algorithm>
@@ -8,7 +8,7 @@ using namespace MathUtility;
 void DeathParticles::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position) {
     
 	// NULLポイントチェック
-	assert(model);
+	//assert(model);
 
 	model_ = model;
 

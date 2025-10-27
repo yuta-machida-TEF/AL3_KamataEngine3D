@@ -3,12 +3,13 @@
 #include "Enemy.h"
 #include "MyMath.h"
 #include "Player.h"
-#include "DeathParticles.h"
+#include "GameOver.h"
+#include "Clear.h"
 using namespace KamataEngine;
 
 void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
-	// textureHandle_ = TextureManager::Load("Fruuits.png");
+	textureHandle_ = TextureManager::Load("A.png");
 
 	sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
@@ -28,6 +29,8 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
 	modelDeath_ = Model::CreateFromOBJ("deathParticle", true);
 
+	clearModel_ = Model::CreateFromOBJ("clear", true);
+
 	// 自キャラの生成
 	player_ = new Player();
 
@@ -44,6 +47,8 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	camera_.Initialize();
 
 	skydome_ = new Skydome();
+
+	
 
 	// 自キャラの初期化
 	// player_->Initialize(modelPlayer_,&camera_,playerPosition);
@@ -75,12 +80,10 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 		enemies_.push_back(newEnemy);
 	}
 
-	/*Enemy* EnemyA = new Enemy();
-	Vector3 enemyAPostion = mapChipField_->GetMapChipPositionByIndex(70, 12);
-	EnemyA->initialize(modelEnemy_, &camera_, enemyAPostion);
-	
-	enemies_.push_back(EnemyA);*/
-
+	//Clear* newClear = new Clear();
+	Vector3 clearPostion = mapChipField_->GetMapChipPositionByIndex(2, 20);
+	//clear_->Initialize(clearModel_, &camera_, clearPostion);
+	//enemies_.push_back(newClear);
 
 		// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;
@@ -202,6 +205,8 @@ GameScene::~GameScene() {
 
 	delete player_;
 
+	delete clear_;
+
 	// 3Dモデルデータの解放
 	delete model_;
 
@@ -211,6 +216,8 @@ GameScene::~GameScene() {
 	delete mapChipField_;
 	//フェード
 	delete fade_;
+
+	delete clearModel_;
 
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -306,6 +313,10 @@ void GameScene::Update()
 		deathParticles_->Update();
 	}
 
+	
+
+	//clearModel_->
+
 	//デスパーティクルが終了したらシーンを終了する
 	/*if (deathParticles_ && deathParticles_->IsFinished()) 
 	{
@@ -364,8 +375,11 @@ void GameScene::Draw() {
 		deathParticles_->Draw();
 	}
 
+    //clear;
+
 	// 3Dモデル描画前処理
 	Model::PostDraw(); // プログラムの終了
 
 	fade_->Draw();
+
 }

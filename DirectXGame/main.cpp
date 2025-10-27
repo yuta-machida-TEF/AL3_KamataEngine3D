@@ -1,7 +1,7 @@
-#include <Windows.h>
 #include "GameScene.h"
 #include "KamataEngine.h"
 #include "TitleScene.h"
+#include <Windows.h>
 
 using namespace KamataEngine;                           // usingは、kamataEngineの下に書く
 DirectXCommon* dxCommon = DirectXCommon::GetInstance(); // DirectX12のクラスは、DirectXCommonにする
@@ -37,10 +37,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	titleScene = new TitleScene();
 	// ゲームシーンの初期化
 	gameScene->Initialize();
-	titleScene->Initialize();
+	titleScene->Initialize(0);
 	scene = Scene::kTitle;
 
-	
 	// メインループ
 	while (true) {
 		// エンジンの更新
@@ -48,12 +47,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 			break;
 		}
 
-		
-	    //シーン切り替え
+		// シーン切り替え
 		ChangeScene();
-		 //現在シーン更新
+		// 現在シーン更新
 		UpdateScene();
-	    
 
 		// ゲームシーンの更新
 
@@ -69,7 +66,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	// ゲームシーンの解放
 	delete gameScene;
 	delete titleScene;
-	
 
 	// エンジンの終了処理
 	KamataEngine::Finalize();
@@ -78,40 +74,36 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 }
 
 void ChangeScene() {
-	switch (scene) 
-	{
+	switch (scene) {
 	case Scene::kTitle:
-		if(titleScene->IsFinished()) 
-		{
-			//シーン変更
+		if (titleScene->IsFinished()) {
+			// シーン変更
 			scene = Scene::kGame;
-			//旧シーンの解放
+			// 旧シーンの解放
 			delete titleScene;
 			titleScene = nullptr;
-			//新シーンの生成と初期化
+			// 新シーンの生成と初期化
 			gameScene = new GameScene;
 			gameScene->Initialize();
 		}
 		break;
 	case Scene::kGame:
-		if (gameScene->IsFinished()) 
-		{
-			//シーン変更
+		if (gameScene->IsFinished()) {
+			// シーン変更
 			scene = Scene::kTitle;
-			//旧シーンの解放
+			// 旧シーンの解放
 			delete gameScene;
 			gameScene = nullptr;
-			//新シーンの生成と初期化
+			// 新シーンの生成と初期化
 			titleScene = new TitleScene;
-			titleScene->Initialize();
+			titleScene->Initialize(0);
 		}
 		break;
 	}
 }
 
 void UpdateScene() {
-	switch (scene) 
-	{
+	switch (scene) {
 	case Scene::kTitle:
 
 		titleScene->Update();
@@ -127,8 +119,7 @@ void UpdateScene() {
 	}
 }
 
-void DrawScene() 
-{
+void DrawScene() {
 	switch (scene) {
 	case Scene::kTitle:
 

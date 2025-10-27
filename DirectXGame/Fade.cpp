@@ -85,14 +85,12 @@ void Fade::Update()
 
 void Fade::Draw() 
 {
-	
 	//DirectXCommonインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	if (status_ == Status::None) {
 		return;
 	}
-
 	Sprite::PreDraw(dxCommon->GetCommandList()); 
 	sprite_->Draw();
 	Sprite::PostDraw();

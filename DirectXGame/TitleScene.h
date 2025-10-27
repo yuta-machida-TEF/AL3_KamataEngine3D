@@ -7,7 +7,7 @@
 class TitleScene{
 public:
 	
-	void Initialize();
+	void Initialize(uint32_t textrueHandle);
 	void Update();
 	void Draw();
 
@@ -19,19 +19,19 @@ public:
 	//デスフラグのgetter
 	bool IsFinished() const { return finished_; }
 
-	// 3Dモデルデータ
-	KamataEngine::Model* model_ = nullptr;
-	// モデルプレイヤー
-	KamataEngine::Model* modelPlayer_ = nullptr;
-	// カメラ
-	KamataEngine::Camera camera_;
-	// ワールドトランスフォーム
-	KamataEngine::WorldTransform worldTransform_;
+	// テクスチャハンドル
+	uint32_t TilteHandle = KamataEngine::TextureManager::Load("A.png");
+	//スプライトを生成
+	KamataEngine::Sprite* sprite = KamataEngine::Sprite::Create(TilteHandle, {0.0f, 0.0f});
 	
-	KamataEngine::WorldTransform worldTransformPlayer_;
+	//// カメラ
+	//KamataEngine::Camera* camera_ = nullptr;
+	//
+	//KamataEngine::WorldTransform worldTransformPlayer_;
 
  
 	Fade* fade_ = nullptr;
+
 
 	//シーンのフェーズ
 	enum class Phase
@@ -43,6 +43,15 @@ public:
 
 	//現在のフェーズ
 	Phase phase_ = Phase::kFadeIn;
+
+private:
+
+	//// 3Dモデルデータ
+	KamataEngine::Model* model_ = nullptr;
+
+
+	//	//// ワールドトランスフォーム
+	//KamataEngine::WorldTransform worldTransform_;
 
 };
 

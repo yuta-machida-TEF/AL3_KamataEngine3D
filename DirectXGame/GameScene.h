@@ -6,8 +6,9 @@
 #include "Player.h"
 #include "Skydome.h"
 #include <vector>
-#include "DeathParticles.h"
+#include "GameOver.h"
 #include "Fade.h"
+#include "Clear.h"
 
 class GameScene {
 public:
@@ -45,6 +46,10 @@ public:
 	//パーティクル
 	KamataEngine::Model* modelDeath_ = nullptr; 
 
+	////クリア条件
+	KamataEngine::Model* clearModel_ = nullptr;
+
+
 	// ワールドトランスフォーム
 	KamataEngine::WorldTransform worldTransform_;
 
@@ -59,6 +64,10 @@ public:
 
 	// キューブ
 	Skydome* skydome_ = nullptr;
+
+	// クリア条件
+	Clear* clear_ = nullptr;
+
 
 	// 敵
 	// Enemy* enemy_ = nullptr;

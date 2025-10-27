@@ -6,18 +6,19 @@ using namespace KamataEngine;
 using namespace MathUtility;
 
 
-void TitleScene::Initialize() 
-{
-	//3Dモデルの生成
-	model_ = Model::CreateFromOBJ("titleFont");
-	modelPlayer_ = Model::CreateFromOBJ("player");
+void TitleScene::Initialize(uint32_t textureHandle) {
+	
 
-	//カメラの初期化
-	camera_.Initialize();
+	TilteHandle = textureHandle;
 
-	//ワールド変換の初期化
-	worldTransform_.Initialize();
-	worldTransformPlayer_.Initialize();
+	//KamataEngine::Camera* camera_ = nullptr;
+
+	////カメラの初期化
+	//camera_.Initialize();
+
+	////ワールド変換の初期化
+	//worldTransform_.Initialize();
+	//worldTransformPlayer_.Initialize();
 
 	// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;
@@ -31,12 +32,15 @@ void TitleScene::Initialize()
 TitleScene::~TitleScene()
 {
 	delete fade_;
+	delete sprite;
 }
 
 
 void TitleScene::Update() 
 {
+
 	fade_->Update();
+	//worldTransform_.TransferMatrix();
 	switch (phase_) {
 	case TitleScene::Phase::kFadeIn:
 		if (Input::GetInstance()->PushKey(DIK_SPACE)) {
@@ -64,14 +68,20 @@ void TitleScene::Update()
 //描画
 void TitleScene::Draw() 
 {
-	//DirectXCommonインタランスの取得
+	////DirectXCommonインタランスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-	//3Dモデル描画前処理
-	Model::PreDraw(dxCommon->GetCommandList());
+	////3Dモデル描画前処理
+	//Model::PreDraw(dxCommon->GetCommandList());
+
+	Sprite::PreDraw(dxCommon->GetCommandList());
+
+	//スプライト描画
+	sprite->Draw();
+
+	//model_->Draw(textureHandle_);
 
 	//ここに3Dモデルインタランスの描画処理を記述する
-    model_->Draw(worldTransform_, camera_);
-	modelPlayer_->Draw(worldTransformPlayer_, camera_);
+	//modelPlayer_->Draw(worldTransformPlayer_, camera_);
 
 	//3Dモデル描画後処理
 	Model::PostDraw();

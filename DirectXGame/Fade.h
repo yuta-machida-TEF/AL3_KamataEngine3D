@@ -1,8 +1,5 @@
 #pragma once
-
 #include "KamataEngine.h"
-
-
 
 class Fade {
 public://publicは、読み込みのためにあるもの
@@ -21,7 +18,7 @@ public://publicは、読み込みのためにあるもの
 	};
 
 	//現在のフェードの状態
-	Status status_ = Status::None;
+    Status status_ = Status::None;
 
 	//フェードの持続時間
 	float duration_ = 0.0f;
@@ -40,6 +37,9 @@ private:
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
+	//ゲームオーバーハンドル
+	uint32_t gameOverHandle = 0;
+
 	// スプライト
 	KamataEngine::Sprite* sprite_ = nullptr;
 
