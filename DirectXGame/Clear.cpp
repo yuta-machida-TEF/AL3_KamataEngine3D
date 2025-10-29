@@ -7,8 +7,7 @@ using namespace KamataEngine;
 using namespace MathUtility;
 #include "Clear.h"
 
-void Clear::Initialize()
-{
+void Clear::Initialize(/*uint32_t textrueHandle*/) {
 	// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;
 
@@ -19,7 +18,20 @@ void Clear::Initialize()
 
 void Clear::Update() { fade_->Update(); }
 
-void Clear::Draw() { model_->Draw(worldTransform_, *camera_ /*textureHandle_*/); }
+void Clear::Draw() 
+{
+	////DirectXCommonインタランスの取得
+	//DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+
+	//model_->Draw(worldTransform_, *camera_ /*textureHandle_*/);
+	//Sprite::PreDraw(dxCommon->GetCommandList());
+
+	// スプライト描画
+	//sprite->Draw();
+
+
+
+}
 
 Clear::~Clear() 
 { delete fade_; }

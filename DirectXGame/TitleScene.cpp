@@ -11,14 +11,9 @@ void TitleScene::Initialize(uint32_t textureHandle) {
 
 	TilteHandle = textureHandle;
 
-	//KamataEngine::Camera* camera_ = nullptr;
-
-	////カメラの初期化
-	//camera_.Initialize();
-
-	////ワールド変換の初期化
-	//worldTransform_.Initialize();
-	//worldTransformPlayer_.Initialize();
+	TitleSound_ = Audio::GetInstance()->LoadWave("maou_bgm_8bit25.mp3");
+	Audio::GetInstance()->PlayWave(TitleSound_, true);
+	titleSoundHandle_ = Audio::GetInstance()->PlayWave(TitleSound_, true);
 
 	// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;
@@ -26,6 +21,8 @@ void TitleScene::Initialize(uint32_t textureHandle) {
 	fade_ = new Fade();
 	fade_->Initialize();
 	fade_->Start(Fade::Status::FadeIn, 6.0f);
+
+	
 
 }
    
@@ -38,7 +35,7 @@ TitleScene::~TitleScene()
 
 void TitleScene::Update() 
 {
-
+	Audio::GetInstance()->StopWave(voiceHandle_);
 	fade_->Update();
 	//worldTransform_.TransferMatrix();
 	switch (phase_) {
@@ -49,7 +46,6 @@ void TitleScene::Update()
 		}
 		break;
 	case TitleScene::Phase::kMain:
-		
 		if(fade_->IsFinished()) 
 		{
 			phase_ = Phase::kMain;
@@ -58,6 +54,7 @@ void TitleScene::Update()
 	case TitleScene::Phase::kFadeOut:
 		if (fade_->IsFinished()) 
 		{
+			Audio::GetInstance()->StopWave(titleSoundHandle_);
 			finished_ = true;
 		}
 		break;

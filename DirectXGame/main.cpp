@@ -30,13 +30,13 @@ void DrawScene();
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	// エンジンの初期化
-	KamataEngine::Initialize(L"LE2D_22_マチダ_ユウタ_AL3"); // 名前を入れると実行画面の左上に名前が表示される
+	KamataEngine::Initialize(L"2163_LE2Dオオツカ_LE2Dサカモト_LE2Dマチダ"); // 名前を入れると実行画面の左上に名前が表示される
 
 	// ゲームシーンのインタンス生成
-	gameScene = new GameScene();
+	//gameScene = new GameScene();
 	titleScene = new TitleScene();
 	// ゲームシーンの初期化
-	gameScene->Initialize();
+	//gameScene->Initialize();
 	titleScene->Initialize(0);
 	scene = Scene::kTitle;
 

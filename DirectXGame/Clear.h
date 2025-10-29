@@ -10,7 +10,7 @@ public:
 
 
 	// 初期化
-	void Initialize();
+	void Initialize(/*uint32_t textrueHandle*/);
 	void Update();
 	void Draw();
 
@@ -32,6 +32,11 @@ public:
 	Phase phase_ = Phase::kFadeIn;
 
 	Fade* fade_ = nullptr;
+
+	//// テクスチャハンドル
+	//uint32_t GameOverHandle = KamataEngine::TextureManager::Load("B.png");
+	//// スプライトを生成
+	//KamataEngine::Sprite* sprite = KamataEngine::Sprite::Create(Ti, {0.0f, 0.0f});
 
 private:
 

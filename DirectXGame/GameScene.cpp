@@ -35,6 +35,11 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
 	clearModel_ = Model::CreateFromOBJ("clear", true);
 
+	 soundDataHandle_ = Audio::GetInstance()->LoadWave("DEAD_HEAT_MAX.mp3");
+
+	 // 音声再生
+	 voiceHandle_ = Audio::GetInstance()->PlayWave(soundDataHandle_,true);
+
 	// 自キャラの生成
 	player_ = new Player();
 
@@ -76,9 +81,9 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	player_->SetMapChipField(mapChipField_);
 
 	// 敵
-	for (int32_t i = 0; i < 8; i++) {
+	for (int32_t i = 0; i < 10; i++) {
 		Enemy* newEnemy = new Enemy();
-		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(0, 12 + i);
+		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(0, 9 + i);
 		newEnemy->initialize(modelEnemy_, &camera_, enemyPostion);
 	
 		enemies_.push_back(newEnemy);
@@ -165,6 +170,7 @@ void GameScene::ChangePhase()
 		break;
 	case Phase::kPlay:
 
+
 		Vector3 worldPos = player_->GetWorldPosition();
 
 		if (worldPos.x >= 97) {
@@ -203,6 +209,7 @@ void GameScene::ChangePhase()
 	case Phase::kFadOut:
 		if (fade_->IsFinished()) 
 		{
+			Audio::GetInstance()->StopWave(voiceHandle_);
 			//シーン終了へ
 			finished_ = true;
 		}
@@ -279,6 +286,7 @@ void GameScene::Update()
 	// worldTransform_.TransferMatrix();
 	cameraController_->Update();
 
+
 	for (Enemy* enemy : enemies_) {
 		enemy->Update();
 	}
@@ -330,6 +338,7 @@ void GameScene::Update()
 	}
 
 	
+
 
 	//clearModel_->
 

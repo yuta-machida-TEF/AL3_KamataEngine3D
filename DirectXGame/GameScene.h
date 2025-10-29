@@ -73,6 +73,12 @@ public:
 	// クリア条件
 	Clear* clear_ = nullptr;
 
+	//サウンド
+	uint32_t soundDataHandle_ = 0;
+	//音声再生ハンドル
+	uint32_t voiceHandle_ = 0;
+
+
 
 	// 敵
 	// Enemy* enemy_ = nullptr;

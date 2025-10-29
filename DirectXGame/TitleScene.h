@@ -24,12 +24,13 @@ public:
 	//スプライトを生成
 	KamataEngine::Sprite* sprite = KamataEngine::Sprite::Create(TilteHandle, {0.0f, 0.0f});
 	
-	//// カメラ
-	//KamataEngine::Camera* camera_ = nullptr;
-	//
-	//KamataEngine::WorldTransform worldTransformPlayer_;
+	//サウンドデータサウンド
+	 uint32_t TitleSound_ = 0;
+	 //音声再生ハンドル
+	 uint32_t titleSoundHandle_ = 0;
 
- 
+
+
 	Fade* fade_ = nullptr;
 
 
@@ -49,6 +50,8 @@ private:
 	//// 3Dモデルデータ
 	KamataEngine::Model* model_ = nullptr;
 
+	// 音声再生ハンドル
+	uint32_t voiceHandle_ = 0;
 
 	//	//// ワールドトランスフォーム
 	//KamataEngine::WorldTransform worldTransform_;
