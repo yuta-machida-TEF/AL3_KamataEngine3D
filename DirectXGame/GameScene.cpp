@@ -128,6 +128,8 @@ void GameScene::GenerateBlocks() {
 
 void GameScene::CheckAllCollisions() {
 #pragma region
+
+
 	// 判定対象1と2の座標
 	AABB aabb1, aabb2;
 
@@ -162,6 +164,14 @@ void GameScene::ChangePhase()
 		}
 		break;
 	case Phase::kPlay:
+
+		Vector3 worldPos = player_->GetWorldPosition();
+
+		if (worldPos.x >= 97) {
+			fade_->Start(Fade::Status::FadeOut, 2.0f);
+			phase_ = Phase::kFadOut;
+			isClear_ = true;
+		}
 
 		/*fade_ = new Fade();
 		fade_->Initialize();

@@ -7,22 +7,21 @@ using namespace KamataEngine;
 using namespace MathUtility;
 #include "Clear.h"
 
-void Clear::Initialize(/*KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position*/)
+void Clear::Initialize()
 {
-	//// NULLポイントチェック
-	//assert(model);
+	// ゲームプレイフェーズ
+	phase_ = Phase::kFadeIn;
 
- //   //model_ = model;
-
-	//worldTransform_.translation_ = position;
-
-	//camera_ = camera;
-
-	//worldTransform_.Initialize();
+	fade_= new Fade();
+	fade_->Initialize();
+	fade_->Start(Fade::Status::FadeIn, 6.0f);
 }
 
-void Clear::Update() {}
+void Clear::Update() { fade_->Update(); }
 
 void Clear::Draw() { model_->Draw(worldTransform_, *camera_ /*textureHandle_*/); }
+
+Clear::~Clear() 
+{ delete fade_; }
 
 //void Clear::OnCollision(const Player* player) { (void)player; }

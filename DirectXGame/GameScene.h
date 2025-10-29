@@ -109,11 +109,15 @@ public:
 		// デスフラグ
 	bool isDead_ = false;
 
+	bool isClear_ = false;
+
 	// デスフラグのgetter
 	bool IsDead() const { return isDead_; }
 
 	//デスフラグのgetter
 	bool IsFinished() const { return finished_; }
+
+	bool IsCleared() const { return isClear_; }
 
 	// 終了フラグ
 	bool finished_ = false;
