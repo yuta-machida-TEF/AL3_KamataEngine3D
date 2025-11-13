@@ -1,3 +1,4 @@
+
 #define NOMINMAX
 #include "TitleScene.h"
 #include <algorithm>
@@ -5,19 +6,13 @@
 using namespace KamataEngine;
 using namespace MathUtility;
 
+void TitleScene::Initialize(uint32_t textureHandle) {
 
-void TitleScene::Initialize() 
-{
-	//3Dモデルの生成
-	model_ = Model::CreateFromOBJ("titleFont");
-	modelPlayer_ = Model::CreateFromOBJ("player");
+	TilteHandle = textureHandle;
 
-	//カメラの初期化
-	camera_.Initialize();
-
-	//ワールド変換の初期化
-	worldTransform_.Initialize();
-	worldTransformPlayer_.Initialize();
+	//TitleSound_ = Audio::GetInstance()->LoadWave("maou_bgm_8bit25.mp3");
+	//Audio::GetInstance()->PlayWave(TitleSound_, true);
+	//titleSoundHandle_ = Audio::GetInstance()->PlayWave(TitleSound_, true);
 
 	// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;
@@ -25,18 +20,17 @@ void TitleScene::Initialize()
 	fade_ = new Fade();
 	fade_->Initialize();
 	fade_->Start(Fade::Status::FadeIn, 6.0f);
-
 }
-   
-TitleScene::~TitleScene()
-{
+
+TitleScene::~TitleScene() {
 	delete fade_;
+	delete sprite;
 }
 
-
-void TitleScene::Update() 
-{
+void TitleScene::Update() {
+	Audio::GetInstance()->StopWave(voiceHandle_);
 	fade_->Update();
+	// worldTransform_.TransferMatrix();
 	switch (phase_) {
 	case TitleScene::Phase::kFadeIn:
 		if (Input::GetInstance()->PushKey(DIK_SPACE)) {
@@ -45,35 +39,37 @@ void TitleScene::Update()
 		}
 		break;
 	case TitleScene::Phase::kMain:
-		
-		if(fade_->IsFinished()) 
-		{
+		if (fade_->IsFinished()) {
 			phase_ = Phase::kMain;
 		}
 		break;
 	case TitleScene::Phase::kFadeOut:
-		if (fade_->IsFinished()) 
-		{
+		if (fade_->IsFinished()) {
+			Audio::GetInstance()->StopWave(titleSoundHandle_);
 			finished_ = true;
 		}
 		break;
 	}
-
 }
 
-//描画
-void TitleScene::Draw() 
-{
-	//DirectXCommonインタランスの取得
+// 描画
+void TitleScene::Draw() {
+	////DirectXCommonインタランスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-	//3Dモデル描画前処理
-	Model::PreDraw(dxCommon->GetCommandList());
+	////3Dモデル描画前処理
+	// Model::PreDraw(dxCommon->GetCommandList());
 
-	//ここに3Dモデルインタランスの描画処理を記述する
-    model_->Draw(worldTransform_, camera_);
-	modelPlayer_->Draw(worldTransformPlayer_, camera_);
+	Sprite::PreDraw(dxCommon->GetCommandList());
 
-	//3Dモデル描画後処理
+	// スプライト描画
+	sprite->Draw();
+
+	// model_->Draw(textureHandle_);
+
+	// ここに3Dモデルインタランスの描画処理を記述する
+	// modelPlayer_->Draw(worldTransformPlayer_, camera_);
+
+	// 3Dモデル描画後処理
 	Model::PostDraw();
 
 	fade_->Draw();

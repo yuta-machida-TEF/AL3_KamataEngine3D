@@ -1,16 +1,22 @@
+
 #include "GameScene.h"
 #include "CameraController.h"
+#include "Clear.h"
+#include "DeathParticles.h"
 #include "Enemy.h"
 #include "MyMath.h"
 #include "Player.h"
-#include "DeathParticles.h"
 using namespace KamataEngine;
 
 void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
-	// textureHandle_ = TextureManager::Load("Fruuits.png");
+	textureHandle_ = TextureManager::Load("A.png");
+
+	gameOverHandle_ = TextureManager::Load("B.png");
 
 	sprite_ = Sprite::Create(textureHandle_, {100, 50});
+
+	sprite2_ = Sprite::Create(gameOverHandle_, {100, 50});
 
 	modelskydome_ = Model::CreateFromOBJ("skydome", true);
 
@@ -24,7 +30,16 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
 	modelEnemy_ = Model::CreateFromOBJ("enemy", true);
 
+	HaitiEnemy_ = Model::CreateFromOBJ("enemy", true);
+
 	modelDeath_ = Model::CreateFromOBJ("deathParticle", true);
+
+	clearModel_ = Model::CreateFromOBJ("clear", true);
+
+	soundDataHandle_ = Audio::GetInstance()->LoadWave("DEAD_HEAT_MAX.mp3");
+
+	// 音声再生
+	voiceHandle_ = Audio::GetInstance()->PlayWave(soundDataHandle_, true);
 
 	// 自キャラの生成
 	player_ = new Player();
@@ -65,15 +80,20 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	player_->SetMapChipField(mapChipField_);
 
 	// 敵
-	for (int32_t i = 0; i < 3; i++) {
+	for (int32_t i = 0; i < 10; i++) {
 		Enemy* newEnemy = new Enemy();
-		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(15, 16 + i);
+		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(0, 9 + i);
 		newEnemy->initialize(modelEnemy_, &camera_, enemyPostion);
 
 		enemies_.push_back(newEnemy);
 	}
 
-		// ゲームプレイフェーズ
+	// Clear* newClear = new Clear();
+	Vector3 clearPostion = mapChipField_->GetMapChipPositionByIndex(2, 20);
+	// clear_->Initialize(clearModel_, &camera_, clearPostion);
+	// enemies_.push_back(newClear);
+
+	// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;
 
 	fade_ = new Fade();
@@ -112,6 +132,7 @@ void GameScene::GenerateBlocks() {
 
 void GameScene::CheckAllCollisions() {
 #pragma region
+
 	// 判定対象1と2の座標
 	AABB aabb1, aabb2;
 
@@ -133,31 +154,36 @@ void GameScene::CheckAllCollisions() {
 #pragma endregion
 }
 
-void GameScene::ChangePhase() 
-{
+void GameScene::ChangePhase() {
 
 	switch (phase_) {
 
 	case Phase::kFadeIn:
-		if (fade_->IsFinished()) 
-		{
-			//ゲームプレイへ切り替え
+		if (fade_->IsFinished()) {
+			// ゲームプレイへ切り替え
 			phase_ = Phase::kPlay;
 		}
 		break;
 	case Phase::kPlay:
 
+		Vector3 worldPos = player_->GetWorldPosition();
+
+		if (worldPos.x >= 97) {
+			fade_->Start(Fade::Status::FadeOut, 2.0f);
+			phase_ = Phase::kFadOut;
+			isClear_ = true;
+		}
+
 		/*fade_ = new Fade();
 		fade_->Initialize();
 		fade_->Start(Fade::Status::FadeIn, 6.0f);*/
 
-		//ゲームプレイフェーズの処理
-		if(player_->IsDead()) 
-		{
-			//死亡演出フェーズに切り替え
+		// ゲームプレイフェーズの処理
+		if (player_->IsDead()) {
+			// 死亡演出フェーズに切り替え
 			phase_ = Phase::kDeath;
-			//自キャラの座標を取得
-			//Vector3 deathParticlesPosition = player_->GetWorldPosition();
+			// 自キャラの座標を取得
+			// Vector3 deathParticlesPosition = player_->GetWorldPosition();
 
 			// 仮の生成処理。後で削除
 			deathParticles_ = new DeathParticles;
@@ -166,32 +192,33 @@ void GameScene::ChangePhase()
 		}
 		break;
 	case Phase::kDeath:
-		//デス演出フェーズの処理
-		if (deathParticles_ && deathParticles_->IsFinished()) 
-		{
+		// デス演出フェーズの処理
+		if (deathParticles_ && deathParticles_->IsFinished()) {
 			fade_->Start(Fade::Status::FadeOut, 2.0f);
 			phase_ = Phase::kFadOut;
 		}
 		break;
 
 	case Phase::kFadOut:
-		if (fade_->IsFinished()) 
-		{
-			//シーン終了へ
+		if (fade_->IsFinished()) {
+			Audio::GetInstance()->StopWave(voiceHandle_);
+			// シーン終了へ
 			finished_ = true;
 		}
 		break;
 	}
-
-
 }
 
 GameScene::~GameScene() {
 	delete sprite_;
 
+	delete sprite2_;
+
 	delete skydome_;
 
 	delete player_;
+
+	delete clear_;
 
 	// 3Dモデルデータの解放
 	delete model_;
@@ -200,8 +227,10 @@ GameScene::~GameScene() {
 
 	// マップチップフィールドの解放
 	delete mapChipField_;
-	//フェード
+	// フェード
 	delete fade_;
+
+	delete clearModel_;
 
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -214,11 +243,9 @@ GameScene::~GameScene() {
 	for (Enemy* enemy : enemies_) {
 		delete enemy;
 	}
-
 }
 
-void GameScene::Update() 
-{
+void GameScene::Update() {
 	// フェード
 	fade_->Update();
 	switch (phase_) {
@@ -228,19 +255,18 @@ void GameScene::Update()
 	case GameScene::Phase::kDeath:
 		break;
 
-    case GameScene::Phase::kFadeIn:
-		//フェード
-		//fade_->Update();
+	case GameScene::Phase::kFadeIn:
+		// フェード
+		// fade_->Update();
 		break;
 	case GameScene::Phase::kFadOut:
-		//フェード	
-	    //fade_->Update();
+		// フェード
+		// fade_->Update();
 		break;
 	default:
 		break;
 	}
-	
-	
+
 	// 自キャラの更新
 	player_->Update();
 	// 行列を定義バッファに転送
@@ -292,30 +318,28 @@ void GameScene::Update()
 		camera_.TransferMatrix();
 	}
 
-	if(deathParticles_) 
-	{
+	if (deathParticles_) {
 		deathParticles_->Update();
 	}
 
-	//デスパーティクルが終了したらシーンを終了する
-	/*if (deathParticles_ && deathParticles_->IsFinished()) 
+	// clearModel_->
+
+	// デスパーティクルが終了したらシーンを終了する
+	/*if (deathParticles_ && deathParticles_->IsFinished())
 	{
-		phase_ = Phase::kFadOut;
-		fade_->Start(Fade::Status::FadeOut, 1.0f);
+	    phase_ = Phase::kFadOut;
+	    fade_->Start(Fade::Status::FadeOut, 1.0f);
 	}*/
 
 	ChangePhase();
-	switch (phase_) 
-	{
+	switch (phase_) {
 	case Phase::kPlay:
-		//ゲームプレイフェーズの処理
+		// ゲームプレイフェーズの処理
 		break;
 	case Phase::kDeath:
-		//デス演出フェーズの処理
+		// デス演出フェーズの処理
 		break;
 	}
-
-
 }
 
 void GameScene::Draw() {
@@ -330,8 +354,7 @@ void GameScene::Draw() {
 	// model_->Draw(worldTransform_, camera_, textureHandle_);
 
 	// 自キャラの描画
-	if (phase_ == Phase::kPlay || phase_ == Phase::kFadeIn) 
-	{
+	if (phase_ == Phase::kPlay || phase_ == Phase::kFadeIn) {
 		player_->Draw();
 	}
 
@@ -350,10 +373,11 @@ void GameScene::Draw() {
 		enemy->Draw();
 	}
 
-	if (deathParticles_) 
-	{
+	if (deathParticles_) {
 		deathParticles_->Draw();
 	}
+
+	// clear;
 
 	// 3Dモデル描画前処理
 	Model::PostDraw(); // プログラムの終了

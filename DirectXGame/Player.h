@@ -59,6 +59,42 @@ public:
 
 	};
 
+	// 攻撃フェーズ
+	enum class AttackPhase {
+		kUnknown = -1, // 無効状態
+		kAnticipation, // 予備動作
+		kAction,       // 前進動作
+		kRecovery,     // 余韻動作
+	};
+
+	//振る舞い
+	enum class Behavior {
+		kRoot,   // 通常状態
+		kAttack, // 攻撃中
+		kUnknown = -1,//無効状態
+	};
+
+	//振る舞い
+	Behavior behavior_ = Behavior::kRoot;
+
+	//次の振る舞いリクエスト
+	Behavior behaviorRequest_ = Behavior::kUnknown;
+
+	//攻撃ギミックの経過時間カウンター
+	uint32_t attackParameter_ = 0;
+
+	//通常行動初期化
+	void BehaviorRootInitialize();
+
+	// 攻撃行動更新
+	void BehaviorAttackUpdate();
+	
+	//// 通常行動更新
+	//void BehaviorRootUpdate();
+
+	////攻撃行動初期化
+	//void BehaviorAttackInitaialize();
+
 	// 自キャラ
 	Player* player_ = nullptr;
 
@@ -68,7 +104,7 @@ public:
 
 	static inline const float kAttenuation = 0.1f;
 
-	static inline const float kLimitRunSpeed = 0.5f;
+	static inline const float kLimitRunSpeed = 0.2f;
 
 	// 重力加速度(下方向)
 	static inline const float kGravityAcceleration = 0.1f;
@@ -127,6 +163,9 @@ public:
 	static inline const float kBlank = 0.9f;
 
 	void AnimateTurn();
+
+	
+
 
 private:
 	// ワールド変換データ
