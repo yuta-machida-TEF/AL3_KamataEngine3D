@@ -37,12 +37,9 @@ public:
 	// 3.判定結果を反映して移動させる
 	void CheakMapMove(const CollisionMapInfo& info);
 	// 4.天井に接触している場合の処理
-	void CheakMapCeiling(const CollisionMapInfo& info);
-	// 5.壁に接触している場合の処理
-	void CheakMapWall(CollisionMapInfo& info);
-	// 6.接地状態の切り替え
-	//void CheakMapLanding(const CollisionMapInfo& info);
-	// 着地フラグ
+	//void CheakMapCeiling(const CollisionMapInfo& info);
+	//// 5.壁に接触している場合の処理
+	//void CheakMapWall(CollisionMapInfo& info);
 
 	// 角
 	enum Corner {

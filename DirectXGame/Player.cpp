@@ -32,14 +32,14 @@ void Player::Update() {
 	CollisionMapInfo collisionMapInfo;
 	// 移動量に速度の値をコピー
 	collisionMapInfo.move = velocity_;
-	// マップ衝突チェック
-	CheakMapCollision(collisionMapInfo);
+	//// マップ衝突チェック
+	//CheakMapCollision(collisionMapInfo);
 	// 3.判定結果を反映して移動させる
 	CheakMapMove(collisionMapInfo);
 	// 4.天井に接触している場合の処理
-	CheakMapCeiling(collisionMapInfo);
+	//CheakMapCeiling(collisionMapInfo);
 	// 5.壁に接触している場合の処理
-	CheakMapWall(collisionMapInfo);
+	//CheakMapWall(collisionMapInfo);
 	// 6.接地状態の切り替え
 	//CheakMapLanding(collisionMapInfo);
 	// 7.旋回制御
@@ -139,7 +139,7 @@ void Player::InputMove() {
 		} else {
 			// 非入力時は移動減衰をかける
 			velocity_.x *= (1.0f - kAccleration);
-		    velocity_.y *= (1.0f - kAccleration);
+			velocity_.y *= (1.0f - kAccleration);
 		}
 }
 
@@ -368,20 +368,20 @@ void Player::CheakMapMove(const CollisionMapInfo& info) {
 }
 
 // 4.天井に接触している場合の処理
-void Player::CheakMapCeiling(const CollisionMapInfo& info) {
-	if (info.ceiling) {
-		DebugText::GetInstance()->ConsolePrintf("hit ceiling\n");
-		velocity_.y = 0;
-	}
-}
+//void Player::CheakMapCeiling(const CollisionMapInfo& info) {
+//	if (info.ceiling) {
+//		DebugText::GetInstance()->ConsolePrintf("hit ceiling\n");
+//		velocity_.y = 0;
+//	}
+//}
 
-// 5.壁に接触している場合の処理
-void Player::CheakMapWall(CollisionMapInfo& info) {
-	// 壁接触による減速
-	if (info.hitwall) {
-		velocity_.x *= (1.0f - kAttenuationWall);
-	}
-}
+//// 5.壁に接触している場合の処理
+//void Player::CheakMapWall(CollisionMapInfo& info) {
+//	// 壁接触による減速
+//	if (info.hitwall) {
+//		velocity_.x *= (1.0f - kAttenuationWall);
+//	}
+//}
 
 // 6.接地状態の切り替え処理
 //void Player::CheakMapLanding(const CollisionMapInfo& info) {

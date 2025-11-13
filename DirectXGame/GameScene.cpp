@@ -358,14 +358,14 @@ void GameScene::Draw() {
 		player_->Draw();
 	}
 
-	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+	/*for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			if (!worldTransformBlock) {
 				continue;
 			}
 			cube_->Draw(*worldTransformBlock, camera_);
 		}
-	}
+	}*/
 
 	skydome_->Draw();
 
