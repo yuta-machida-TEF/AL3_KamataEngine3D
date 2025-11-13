@@ -41,7 +41,7 @@ void Player::Update() {
 	// 5.壁に接触している場合の処理
 	CheakMapWall(collisionMapInfo);
 	// 6.接地状態の切り替え
-	CheakMapLanding(collisionMapInfo);
+	//CheakMapLanding(collisionMapInfo);
 	// 7.旋回制御
 	AnimateTurn();
 
@@ -63,18 +63,21 @@ void Player::Draw() {
 // 移動入力
 void Player::InputMove() {
 	// 左右移動操作
-	if (onGround_) {
-		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
+	//if (onGround_) {
+		if (Input::GetInstance()->PushKey(DIK_D) || Input::GetInstance()->PushKey(DIK_A)
+			|| Input::GetInstance()->PushKey(DIK_W)|| Input::GetInstance()->PushKey(DIK_S)) 
+		{
 
 			// 左右加速
-			Vector3 acceleration = {};
-			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+		    Vector2 acceleration = {};
+			if (Input::GetInstance()->PushKey(DIK_D)) {
 				// 左移動中の右入力
 				if (velocity_.x < 0.0f) {
 					// 速度と逆方向に入力中は急ブレーキ
 					velocity_.x *= (1.0f - kAttenuation);
 				}
 				acceleration.x += kAccleration;
+
 				if (lrDirection_ != LRDirection::kRight) {
 					lrDirection_ = LRDirection::kRight;
 					// 旋回開始時の角度を記録する
@@ -82,42 +85,62 @@ void Player::InputMove() {
 					// 旋回タイマーに時間を設定する
 					trunTimer_ = kTimeTurn;
 				}
-			} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
-				// 右移動中の左入力
-				if (velocity_.x > 0.0f) {
-					// 速度と逆方向に入力中は急ブレーキ
-					velocity_.x *= (1.0f - kAttenuation);
-				}
-				acceleration.x -= kAccleration;
-				if (lrDirection_ != LRDirection::kLeft) {
-					lrDirection_ = LRDirection::kLeft;
-					// 旋回開始時の角度を記録する
-					trunFirstRotationY_ = worldTransform_.rotation_.y;
-					// 旋回タイマーに時間を設定する
-					trunTimer_ = kTimeTurn;
-				}
-			}
+			} 
+			else if (Input::GetInstance()->PushKey(DIK_A)) {
+			    // 右移動中の左入力
+			    if (velocity_.x > 0.0f) {
+				    // 速度と逆方向に入力中は急ブレーキ
+				    velocity_.x *= (1.0f - kAttenuation);
+			    }
+			    acceleration.x -= kAccleration;
+			    if (lrDirection_ != LRDirection::kLeft) {
+				    lrDirection_ = LRDirection::kLeft;
+				    // 旋回開始時の角度を記録する
+				    trunFirstRotationY_ = worldTransform_.rotation_.y;
+				    // 旋回タイマーに時間を設定する
+				    trunTimer_ = kTimeTurn;
+			    }
+		    } else if (Input::GetInstance()->PushKey(DIK_W)) {
+			    // 右移動中の左入力
+			    if (velocity_.y < 0.0f) {
+				    // 速度と逆方向に入力中は急ブレーキ
+				    velocity_.y *= (1.0f - kAttenuation);
+			    }
+			    acceleration.y += kAccleration;
+
+			    if (lrDirection_ != LRDirection::UP) 
+				{
+				    lrDirection_ = LRDirection::UP;
+			    }
+
+		    } else if (Input::GetInstance()->PushKey(DIK_S)) {
+			    // 右移動中の左入力
+			    if (velocity_.y > 0.0f) {
+				    // 速度と逆方向に入力中は急ブレーキ
+				    velocity_.y *= (1.0f - kAttenuation);
+			    }
+			    acceleration.y -= kAccleration;
+
+			    if (lrDirection_ != LRDirection::DOWN)
+				{
+				    lrDirection_ = LRDirection::DOWN;   
+			    }
+
+		    }
+
 			// 加速/減速
-			velocity_ += acceleration;
+		    velocity_.x += acceleration.x;
+		    velocity_.y += acceleration.y;
+
 			// 最大速度制限
 			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+		    velocity_.y = std::clamp(velocity_.y, -kLimitRunSpeed, kLimitRunSpeed);
 
 		} else {
 			// 非入力時は移動減衰をかける
 			velocity_.x *= (1.0f - kAccleration);
+		    velocity_.y *= (1.0f - kAccleration);
 		}
-		if (Input::GetInstance()->PushKey(DIK_UP)) {
-			// ジャンプ初速
-			velocity_ += Vector3(0, kJumpAcceleration, 0);
-		}
-	}
-	// 空中
-	else {
-		// 落下速度
-		velocity_ += Vector3(0, -kGravityAcceleration, 0);
-		// 落下速度制限
-		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
-	}
 }
 
 // 2.マップ衝突チェック
@@ -228,14 +251,14 @@ void Player::CheakMapCollisionDown(CollisionMapInfo& info) {
 	}
 
 	// 着地フラグ
-	if (info.langing) {
-		// 着地状態に切り替える(落下を止める)
-		onGround_ = true;
-		// 着地時にX速度を減衰
-		velocity_.x *= (1.0f - kAttenuationLanding);
-		// Y速度をゼロにする
-		velocity_.y = 0.0f;
-	}
+	//if (info.langing) {
+	//	// 着地状態に切り替える(落下を止める)
+	//	//onGround_ = true;
+	//	// 着地時にX速度を減衰
+	//	velocity_.x *= (1.0f - kAttenuationLanding);
+	//	// Y速度をゼロにする
+	//	velocity_.y = 0.0f;
+	//}
 }
 
 // マップ衝突チェック 右
@@ -361,59 +384,59 @@ void Player::CheakMapWall(CollisionMapInfo& info) {
 }
 
 // 6.接地状態の切り替え処理
-void Player::CheakMapLanding(const CollisionMapInfo& info) {
-	// 自キャラが接地状態
-	if (onGround_) {
-		// 接地状態の処理
-
-		// ジャンプ開始
-		if (velocity_.y > 0.0f) {
-			onGround_ = false;
-		} else {
-			// 落下判定
-			//  移動後の4つの角の座標
-			std::array<Vector3, kNumCorner> positionsNew;
-
-			for (uint32_t i = 0; i < positionsNew.size(); i++) {
-				positionsNew[i] = CornerPosition(worldTransform_.translation_ + info.move, static_cast<Corner>(i));
-			}
-
-			MapChipType mapChipType;
-			// 真下の当たり判定を行う
-			bool hit = false;
-			// 左下点の判定
-
-			MapChipField::IndexSet indexSet;
-			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftBottom] + Vector3(0, -kGroundSearchHeight, 0));
-			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-			if (mapChipType == MapChipType::kBlock) {
-				hit = true;
-			}
-			////右上点の判定
-			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightBottom] + Vector3(0, -kGroundSearchHeight, 0));
-			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-			if (mapChipType == MapChipType::kBlock) {
-				hit = true;
-			}
-
-			// 落下なら空中状態に切り替え
-			if (!hit) {
-				// 空中状態の処理
-				onGround_ = false;
-			}
-		}
-	} else {
-		// 空中状態の処理
-		if (info.langing) {
-			// 着地状態に切り替える(落下を止める)
-			onGround_ = true;
-			// 着地時にX速度を減衰
-			velocity_.x *= (1.0f - kAttenuationLanding);
-			// Y速度をゼロにする
-			velocity_.y = 0.0f;
-		}
-	}
-}
+//void Player::CheakMapLanding(const CollisionMapInfo& info) {
+//	// 自キャラが接地状態
+//	if (onGround_) {
+//		// 接地状態の処理
+//
+//		// ジャンプ開始
+//		if (velocity_.y > 0.0f) {
+//			onGround_ = f;
+//		} else {
+//			// 落下判定
+//			//  移動後の4つの角の座標
+//			std::array<Vector3, kNumCorner> positionsNew;
+//
+//			for (uint32_t i = 0; i < positionsNew.size(); i++) {
+//				positionsNew[i] = CornerPosition(worldTransform_.translation_ + info.move, static_cast<Corner>(i));
+//			}
+//
+//			MapChipType mapChipType;
+//			// 真下の当たり判定を行う
+//			bool hit = false;
+//			// 左下点の判定
+//
+//			MapChipField::IndexSet indexSet;
+//			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftBottom] + Vector3(0, -kGroundSearchHeight, 0));
+//			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+//			if (mapChipType == MapChipType::kBlock) {
+//				hit = true;
+//			}
+//			////右上点の判定
+//			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightBottom] + Vector3(0, -kGroundSearchHeight, 0));
+//			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+//			if (mapChipType == MapChipType::kBlock) {
+//				hit = true;
+//			}
+//
+//			// 落下なら空中状態に切り替え
+//			if (!hit) {
+//				// 空中状態の処理
+//				onGround_ = true;
+//			}
+//		}
+//	//} else {
+//	//	// 空中状態の処理
+//	//	if (info.langing) {
+//	//		// 着地状態に切り替える(落下を止める)
+//	//		onGround_ = true;
+//	//		// 着地時にX速度を減衰
+//	//		velocity_.x *= (1.0f - kAttenuationLanding);
+//	//		// Y速度をゼロにする
+//	//		velocity_.y = 0.0f;
+//	//	}
+//	}
+//}
 
 // 7.旋回制御
 void Player::AnimateTurn() {

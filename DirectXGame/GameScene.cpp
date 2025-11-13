@@ -47,7 +47,7 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	mapChipField_ = new MapChipField;
 
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 18);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 17);
 	player_->Initialize(model_, &camera_, playerPosition);
 
 	// ワールドトランスフォームの初期化

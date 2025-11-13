@@ -41,12 +41,8 @@ public:
 	// 5.壁に接触している場合の処理
 	void CheakMapWall(CollisionMapInfo& info);
 	// 6.接地状態の切り替え
-	void CheakMapLanding(const CollisionMapInfo& info);
+	//void CheakMapLanding(const CollisionMapInfo& info);
 	// 着地フラグ
-
-	// void CheakMapMove(CollisionMapInfo& info);
-	// void CheakMapCeiling(CollisionMapInfo& info);
-	// void CheakMapWall(CollisionMapInfo& info);
 
 	// 角
 	enum Corner {
@@ -107,7 +103,7 @@ public:
 	static inline const float kLimitRunSpeed = 0.2f;
 
 	// 重力加速度(下方向)
-	static inline const float kGravityAcceleration = 0.1f;
+	//static inline const float kGravityAcceleration = 0.0f;
 	// 最大落下速度(下方向)
 	static inline const float kLimitFallSpeed = 0.4f;
 	// ジャンプ初速(上方向)
@@ -123,6 +119,8 @@ public:
 	enum class LRDirection {
 		kRight,
 		kLeft,
+		UP,
+		DOWN,
 	};
 
 	// 旋回開始時の角度
@@ -132,9 +130,10 @@ public:
 	// 旋回時間<秒>
 	static inline const float kTimeTurn = 0.3f;
 	// 接地状態フラグ
-	bool onGround_ = true;
+	//bool onGround_ = true;
 
 	LRDirection lrDirection_ = LRDirection::kRight;
+	LRDirection lrDirection2_ = LRDirection::DOWN;
 
 	const KamataEngine::WorldTransform& GetWorldTransform() const { return worldTransform_; }
 
