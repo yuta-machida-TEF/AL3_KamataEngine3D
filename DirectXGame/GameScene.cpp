@@ -75,10 +75,6 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
 	cameraController_->SetMovableArea(cameraArea);
 
-	// マップチップフィールドの生成と初期化
-	// 自キャラの生成と初期化
-	player_->SetMapChipField(mapChipField_);
-
 	// 敵
 	for (int32_t i = 0; i < 10; i++) {
 		Enemy* newEnemy = new Enemy();
