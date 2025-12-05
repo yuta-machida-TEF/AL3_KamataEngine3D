@@ -4,11 +4,11 @@
 #include "MyMath.h"
 #include "Player.h"
 #include "DeathParticles.h"
+#include "Clear.h"
 using namespace KamataEngine;
 
 void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
-	// textureHandle_ = TextureManager::Load("Fruuits.png");
 
 	sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
@@ -26,6 +26,8 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
 	modelDeath_ = Model::CreateFromOBJ("deathParticle", true);
 
+	clearModel_ = Model::CreateFromOBJ("clear", true);
+
 	// 自キャラの生成
 	player_ = new Player();
 
@@ -42,9 +44,6 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	camera_.Initialize();
 
 	skydome_ = new Skydome();
-
-	// 自キャラの初期化
-	// player_->Initialize(modelPlayer_,&camera_,playerPosition);
 
 	skydome_->Initialize(modelskydome_, &camera_);
 
@@ -72,6 +71,8 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	enemies_.push_back(newEnemy);
 	
 
+	Vector3 clearPostion = mapChipField_->GetMapChipPositionByIndex(2, 15);
+
 		// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;
 
@@ -84,9 +85,6 @@ void GameScene::GenerateBlocks() {
 	// 要素数
 	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
 	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
-	// ブロック1個分の横幅
-	// const float kBlockWidth = 2.0f;
-	// const float kBlockHeight = 2.0f;
 	// 要素数を変更する
 	worldTransformBlocks_.resize(numBlockVirtical);
 
@@ -146,17 +144,20 @@ void GameScene::ChangePhase()
 		break;
 	case Phase::kPlay:
 
-		/*fade_ = new Fade();
-		fade_->Initialize();
-		fade_->Start(Fade::Status::FadeIn, 6.0f);*/
+	Vector3 worldPos = player_->GetWorldPosition();
+
+		if (worldPos.x >= 20) {
+			fade_->Start(Fade::Status::FadeOut, 2.0f);
+			phase_ = Phase::kFadOut;
+			isClear_ = true;
+		}
+
 
 		//ゲームプレイフェーズの処理
 		if(player_->IsDead()) 
 		{
 			//死亡演出フェーズに切り替え
 			phase_ = Phase::kDeath;
-			//自キャラの座標を取得
-			//Vector3 deathParticlesPosition = player_->GetWorldPosition();
 
 			// 仮の生成処理。後で削除
 			deathParticles_ = new DeathParticles;
@@ -192,6 +193,8 @@ GameScene::~GameScene() {
 
 	delete player_;
 
+	delete clear_; 
+
 	// 3Dモデルデータの解放
 	delete model_;
 
@@ -201,6 +204,8 @@ GameScene::~GameScene() {
 	delete mapChipField_;
 	//フェード
 	delete fade_;
+
+	delete clearModel_;
 
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -295,13 +300,6 @@ void GameScene::Update()
 	{
 		deathParticles_->Update();
 	}
-
-	//デスパーティクルが終了したらシーンを終了する
-	/*if (deathParticles_ && deathParticles_->IsFinished()) 
-	{
-		phase_ = Phase::kFadOut;
-		fade_->Start(Fade::Status::FadeOut, 1.0f);
-	}*/
 
 	ChangePhase();
 	switch (phase_) 

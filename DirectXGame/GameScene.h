@@ -8,6 +8,7 @@
 #include <vector>
 #include "DeathParticles.h"
 #include "Fade.h"
+#include "Clear.h"
 
 class GameScene {
 public:
@@ -27,8 +28,6 @@ public:
 	// デバックカメラ
 	KamataEngine::DebugCamera* debugCamera_ = nullptr;
 
-	// デバックカメラの生成
-	// debugCamera_ = new DebugCamera();
 
 	// 3Dモデル
 	KamataEngine::Model* modelskydome_ = nullptr;
@@ -41,6 +40,10 @@ public:
 
 	//パーティクル
 	KamataEngine::Model* modelDeath_ = nullptr; 
+
+	////クリア条件
+	KamataEngine::Model* clearModel_ = nullptr;
+
 
 	// ワールドトランスフォーム
 	KamataEngine::WorldTransform worldTransform_;
@@ -57,8 +60,9 @@ public:
 	// キューブ
 	Skydome* skydome_ = nullptr;
 
-	// 敵
-	// Enemy* enemy_ = nullptr;
+
+	// クリア条件
+	Clear* clear_ = nullptr;
 
 	std::list<Enemy*> enemies_;
 
@@ -73,8 +77,6 @@ public:
 
 	// カメラコントロール
 	CameraController* cameraController_ = nullptr;
-	// void Initialize();
-	// KamataEngine::Model* cameraModel_;
 
 	DeathParticles* deathParticles_ = nullptr;
 
@@ -92,11 +94,16 @@ public:
 		// デスフラグ
 	bool isDead_ = false;
 
+	bool isClear_ = false;
+
 	// デスフラグのgetter
 	bool IsDead() const { return isDead_; }
 
 	//デスフラグのgetter
 	bool IsFinished() const { return finished_; }
+
+	bool IsCleared() const { return isClear_; }
+
 
 	// 終了フラグ
 	bool finished_ = false;
