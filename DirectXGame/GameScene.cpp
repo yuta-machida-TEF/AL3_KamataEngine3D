@@ -237,8 +237,6 @@ void GameScene::Update()
 		//fade_->Update();
 		break;
 	case GameScene::Phase::kFadOut:
-		//フェード	
-	    //fade_->Update();
 		break;
 	default:
 		break;
