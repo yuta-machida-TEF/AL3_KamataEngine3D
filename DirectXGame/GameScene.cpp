@@ -65,13 +65,12 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	player_->SetMapChipField(mapChipField_);
 
 	// 敵
-	for (int32_t i = 0; i < 3; i++) {
-		Enemy* newEnemy = new Enemy();
-		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(15, 16 + i);
-		newEnemy->initialize(modelEnemy_, &camera_, enemyPostion);
+    Enemy* newEnemy = new Enemy();
+    Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(15, 16);
+    newEnemy->initialize(modelEnemy_, &camera_, enemyPostion);
 
-		enemies_.push_back(newEnemy);
-	}
+	enemies_.push_back(newEnemy);
+	
 
 		// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;

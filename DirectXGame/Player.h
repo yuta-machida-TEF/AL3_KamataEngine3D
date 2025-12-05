@@ -68,7 +68,7 @@ public:
 
 	static inline const float kAttenuation = 0.1f;
 
-	static inline const float kLimitRunSpeed = 0.5f;
+	static inline const float kLimitRunSpeed = 0.2f;
 
 	// 重力加速度(下方向)
 	static inline const float kGravityAcceleration = 0.1f;
