@@ -5,16 +5,11 @@
 class MapChipField;
 class Enemy;
 
+
 class Player {
 public:
-	// AABBを取得
-	AABB GetAABB();
 
 	KamataEngine::Vector3 GetWorldPosition();
-
-	// キャラクターの当たり判定サイズ
-	static inline const float kWidth = 0.8f;
-	static inline const float kHeight = 0.8f;
 
 	// マップとの当たり判定情報
 	struct CollisionMapInfo 
@@ -61,9 +56,6 @@ public:
 	//デスフラグのgetter
 	bool IsDead() const { return isDead_; }
 
-	// 衝突応答
-	void OnCollision(const Enemy* enemy);
-
 	// 初期化
 	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position);
 
@@ -78,9 +70,6 @@ public:
 	static inline const float kBlank = 0.9f;
 
 	void AnimateTurn();
-
-	
-
 
 private:
 	// ワールド変換データ

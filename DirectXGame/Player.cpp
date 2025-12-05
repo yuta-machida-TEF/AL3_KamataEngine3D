@@ -13,8 +13,6 @@ void Player::Initialize(Model* model, Camera* camera, KamataEngine::Vector3& pos
 
 	model_ = model;
 
-	// textureHandle_ = textureHandle;
-
 	worldTransform_.translation_ = position;
 
 	camera_ = camera;
@@ -42,11 +40,9 @@ void Player::Update() {
 	worldTransform_.TransferMatrix(); // プレイヤーの座標の計算
 }
 
-void Player::Draw() {
-	if (isDead_) {
-		return;
-	}
-	model_->Draw(worldTransform_, *camera_ /*textureHandle_*/);
+void Player::Draw()
+{
+     model_->Draw(worldTransform_, *camera_);
 }
 
 // 移動入力
@@ -167,20 +163,4 @@ Vector3 Player::GetWorldPosition() {
 	return worldPos;
 }
 
-AABB Player::GetAABB() {
-	Vector3 worldPos = GetWorldPosition();
 
-	AABB aabb;
-
-	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
-	aabb.max = {worldPos.x + kWidth / 2.0f, worldPos.y + kHeight / 2.0f, worldPos.z + kWidth / 2.0f};
-
-	return aabb;
-}
-
-void Player::OnCollision(const Enemy* enemy) {
-	(void)enemy;
-
-	// 自キャラの衝突時間数を呼び出す
-	isDead_ = true;
-}

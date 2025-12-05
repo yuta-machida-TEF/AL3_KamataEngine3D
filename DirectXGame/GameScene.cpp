@@ -133,7 +133,7 @@ void GameScene::CheckAllCollisions() {
 	AABB aabb1, aabb2;
 
 	// 自キャラの座標
-	aabb1 = player_->GetAABB();
+	//aabb1 = player_->GetAABB();
 
 	// 自キャラと敵弾全ての当たり判定
 	for (Enemy* enemy : enemies_) {
@@ -142,7 +142,7 @@ void GameScene::CheckAllCollisions() {
 		// AABB同士の交差判定
 		if (IsCollision(aabb1, aabb2)) {
 			// 自キャラの衝突時間数を呼び出す
-			player_->OnCollision(enemy);
+			//player_->OnCollision(enemy);
 			// 敵の衝突時間関数を呼び出す
 			enemy->OnCollision(player_);
 		}
@@ -265,8 +265,6 @@ void GameScene::Update() {
 
 	// 自キャラの更新
 	player_->Update();
-	// 行列を定義バッファに転送
-	// worldTransform_.TransferMatrix();
 	cameraController_->Update();
 
 	for (Enemy* enemy : enemies_) {
