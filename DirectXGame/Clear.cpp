@@ -8,7 +8,11 @@ using namespace KamataEngine;
 using namespace MathUtility;
 #include "Clear.h"
 
-void Clear::Initialize() {
+void Clear::Initialize(uint32_t textrueHandle) {
+	
+	// 3Dモデルの生成
+	clearHandle = textrueHandle;
+	
 	// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;
 
@@ -17,10 +21,15 @@ void Clear::Initialize() {
 	fade_->Start(Fade::Status::FadeIn, 6.0f);
 }
 
-void Clear::Update() { fade_->Update(); }
+void Clear::Update() 
+{ 
+	fade_->Update();
+}
 
-void Clear::Draw() {
-	
+void Clear::Draw() 
+{
+	sprite->Draw();
+	fade_->Draw();
 }
 
 Clear::~Clear() { delete fade_; }

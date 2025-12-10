@@ -1,3 +1,15 @@
 #pragma once
-//#include<fu>
+#include<vector>
+#include<functional>
+
+class CollapseFloor {
+public:
+	
+	enum Stage: {
+
+	};
+
+
+private:
+};
 

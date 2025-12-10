@@ -8,7 +8,7 @@ public:
 	Clear* clear_ = nullptr;
 
 	// 初期化
-	void Initialize();
+	void Initialize(uint32_t textrueHandle);
 	void Update();
 	void Draw();
 
@@ -18,6 +18,12 @@ public:
 	bool finished_ = false;
 	// デスフラグのgetter
 	bool IsFinished() const { return finished_; }
+
+	// テクスチャハンドル
+	uint32_t clearHandle = KamataEngine::TextureManager::Load("Clear.png");
+
+	// スプライトを生成
+	KamataEngine::Sprite* sprite = KamataEngine::Sprite::Create(clearHandle, {0.0f, 0.0f});
 
 	// シーンのフェーズ
 	enum class Phase {
