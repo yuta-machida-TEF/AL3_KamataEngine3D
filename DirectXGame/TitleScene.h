@@ -14,6 +14,12 @@ public:
 	~TitleScene();
 
 
+	// サウンドデータサウンド
+	uint32_t TitleSound_ = 0;
+
+	// 音声再生ハンドル
+	uint32_t titleSoundHandle_ = 0;
+
 	//終了フラグ
 	bool finished_ = false;
 	//デスフラグのgetter

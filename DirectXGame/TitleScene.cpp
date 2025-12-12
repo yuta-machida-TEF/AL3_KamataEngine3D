@@ -10,6 +10,10 @@ void TitleScene::Initialize(uint32_t textrueHandle) {
 	//3Dモデルの生成
 	TilteHandle = textrueHandle;
 
+   TitleSound_ = Audio::GetInstance()->LoadWave("sangatsunosundasora.mp3");  
+   Audio::GetInstance()->PlayWave(TitleSound_, true);
+
+
 	// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;
 
@@ -45,6 +49,7 @@ void TitleScene::Update()
 	case TitleScene::Phase::kFadeOut:
 		if (fade_->IsFinished()) 
 		{
+			Audio::GetInstance()->StopWave(titleSoundHandle_);
 			finished_ = true;
 		}
 		break;
