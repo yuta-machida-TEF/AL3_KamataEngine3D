@@ -10,7 +10,6 @@ void TitleScene::Initialize()
 {
 	//3Dモデルの生成
 	model_ = Model::CreateFromOBJ("titleFont");
-	modelPlayer_ = Model::CreateFromOBJ("player");
 
 	//カメラの初期化
 	camera_.Initialize();
@@ -71,7 +70,6 @@ void TitleScene::Draw()
 
 	//ここに3Dモデルインタランスの描画処理を記述する
     model_->Draw(worldTransform_, camera_);
-	modelPlayer_->Draw(worldTransformPlayer_, camera_);
 
 	//3Dモデル描画後処理
 	Model::PostDraw();
