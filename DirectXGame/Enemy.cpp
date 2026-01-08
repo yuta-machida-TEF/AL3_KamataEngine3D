@@ -7,13 +7,12 @@ using namespace KamataEngine;
 using namespace MathUtility;
 #include "Enemy.h"
 
+
 void Enemy::initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position) {
 	// NULLポイントチェック
-	assert(model);
+	//assert(model);
 
 	model_ = model;
-
-	// textureHandle_ = textureHandle;
 
 	worldTransform_.translation_ = position;
 
