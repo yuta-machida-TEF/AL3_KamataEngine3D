@@ -30,20 +30,20 @@ public:
 	static inline const float kInterpolationRate = 0.8f;
 
 	// 追従対象とカメラの座標の差(オフセット)
-	KamataEngine::Vector3 targetOffset_ = {0, 0, -15.0f};
+	KamataEngine::Vector3 targetOffset_ = {0, 0, -20.0f};
 
 	// 短形
 	struct Rect {
 		float left = 0.0f;   // 左端
 		float right = 1.0f;  // 右端
-		float bottom = 0.0f; // 下端
+		float bottom = 1.0f; // 下端
 		float top = 1.0f;    // 上端
 	};
 
 	// カメラ移動範囲
-	Rect movableArea_ = {0, 100, 0, 100};
+	//Rect movableArea_ = {0, 100, 0, 100};
 
-	void SetMovableArea(Rect area) { movableArea_ = area; }
+	//void SetMovableArea(Rect area) { movableArea_ = area; }
 
 	// カメラの目標座標
 	KamataEngine::Vector3 coordInate;

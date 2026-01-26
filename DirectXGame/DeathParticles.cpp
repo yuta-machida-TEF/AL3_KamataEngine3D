@@ -43,7 +43,7 @@ void DeathParticles::Update() {
 		// 回転角を計算する
 		float angle = 30.0f * i;
 		// Z軸まわり回転行列
-		Matrix4x4 matrixRotation = MakeRotateZMatrix(angle);
+		KamataEngine::Matrix4x4 matrixRotation = MakeRotateZMatrix(angle);
 		// 基本ベクトルを回転させて速度ベクトルを得る
 		velocity = Transform(velocity, matrixRotation);
 		// 移動処理

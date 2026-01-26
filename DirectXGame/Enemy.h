@@ -1,12 +1,15 @@
 #pragma once
 #include "MyMath.h" //アフィン変換行列の計算のヘッター
-// #include "KamataEngine.h"
+#include"Player.h"
+#include "KamataEngine.h"
 
 class Player;
 
 // 敵
 class Enemy {
 public:
+
+
 	// マップチップによるフィールド
 	MapChipField* mapChipField_ = nullptr;
 
@@ -33,21 +36,12 @@ public:
 	// 歩行の速さ
 	static inline const float kWalkSpeed = 0.04f;
 
-	// 最初の角度[度]
-	static inline const float kWalkMotionAngleStart = 5.0f;
-	// 最後の角度[度]
-	static inline const float kWalkMotionAngleEnd = 5.0f;
-	// アニメーションの周期となる時間[秒]
-	static inline const float kWalkMotionTime = 5.0f;
-
-	// 経過時間
-	float walkTimer_ = 0.0f;
-
 	// AABBを取得
 	AABB GetAABB();
 
 	// ワールド座標を取得
 	KamataEngine::Vector3 GetWorldPosition();
+
 
 	void initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position);
 	void Update();
@@ -63,5 +57,8 @@ private:
 
 	KamataEngine::Model* model_;
 
-	// KamataEngine::Vector3 velocity_ = {};
+	KamataEngine::Vector3 translate_ ={};
+
+	KamataEngine::Vector3 rotate_ = {};
+
 };

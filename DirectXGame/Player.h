@@ -5,6 +5,7 @@
 class MapChipField;
 class Enemy;
 
+
 class Player {
 public:
 	// AABBを取得
@@ -44,10 +45,6 @@ public:
 	void CheakMapLanding(const CollisionMapInfo& info);
 	// 着地フラグ
 
-	// void CheakMapMove(CollisionMapInfo& info);
-	// void CheakMapCeiling(CollisionMapInfo& info);
-	// void CheakMapWall(CollisionMapInfo& info);
-
 	// 角
 	enum Corner {
 		kRightBottom, // 右下
@@ -68,7 +65,7 @@ public:
 
 	static inline const float kAttenuation = 0.1f;
 
-	static inline const float kLimitRunSpeed = 0.5f;
+	static inline const float kLimitRunSpeed = 0.3f;
 
 	// 重力加速度(下方向)
 	static inline const float kGravityAcceleration = 0.1f;

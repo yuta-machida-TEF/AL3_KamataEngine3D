@@ -22,7 +22,7 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	// 3Dモデルデータの生成
 	model_ = Model::CreateFromOBJ("player", true);
 
-	modelEnemy_ = Model::CreateFromOBJ("enemy", true);
+	modelEnemy_ = Model::CreateFromOBJ("boss", true);
 
 	modelDeath_ = Model::CreateFromOBJ("deathParticle", true);
 
@@ -58,14 +58,13 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	cameraController_->Reset();
 
 	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
-	cameraController_->SetMovableArea(cameraArea);
 
 	// マップチップフィールドの生成と初期化
 	// 自キャラの生成と初期化
 	player_->SetMapChipField(mapChipField_);
 
 	// 敵
-	for (int32_t i = 0; i < 3; i++) {
+	for (int32_t i = 0; i < 1; i++) {
 		Enemy* newEnemy = new Enemy();
 		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(15, 16 + i);
 		newEnemy->initialize(modelEnemy_, &camera_, enemyPostion);
