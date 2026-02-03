@@ -111,6 +111,7 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 		enemies_.push_back(newEnemy);
 	}
 	
+
 	for (int i = 0; i < 2; i++) {
 		Enemy* newEnemy = new Enemy();
 		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(52, 17 + i);
