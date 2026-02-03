@@ -380,6 +380,7 @@ void GameScene::Draw() {
 		player_->Draw();
 	}
 
+
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			if (!worldTransformBlock) {
