@@ -221,6 +221,7 @@ void GameScene::ChangePhase()
 		}
 		break;
 
+
 	case Phase::kFadOut:
 		if (fade_->IsFinished()) 
 		{
