@@ -60,10 +60,6 @@ public:
 	// キューブ
 	Skydome* skydome_ = nullptr;
 
-
-	// クリア条件
-	Clear* clear_ = nullptr;
-
 	std::list<Enemy*> enemies_;
 
 	// マップチップフィールド
@@ -125,4 +121,9 @@ public:
 
 	// 描画
 	void Draw();
+
+private:
+
+	Clear* clear_ = nullptr;
+
 };

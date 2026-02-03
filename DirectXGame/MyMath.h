@@ -16,3 +16,5 @@ struct AABB {
 
 // 衝突判定
 bool IsCollision(const AABB& aabb1, const AABB& aabb2);
+
+void UpdateMatrix(KamataEngine::WorldTransform& worldTransform);

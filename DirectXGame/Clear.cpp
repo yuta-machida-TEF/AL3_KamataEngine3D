@@ -1,35 +1,28 @@
-
-#define NOMINMAX
-#include "MapChipField.h"
-#include "Player.h"
-#include <algorithm>
-#include <numbers>
-using namespace KamataEngine;
-using namespace MathUtility;
 #include "Clear.h"
 
-void Clear::Initialize(uint32_t textrueHandle) {
-	
-	// 3Dモデルの生成
-	clearHandle = textrueHandle;
-	
-	// ゲームプレイフェーズ
-	phase_ = Phase::kFadeIn;
+using namespace KamataEngine;
+using namespace MathUtility;
 
-	fade_ = new Fade();
-	fade_->Initialize();
-	fade_->Start(Fade::Status::FadeIn, 6.0f);
+void Clear::Initialize(Model* model, Camera* camera, const Vector3& position) {
+	model_ = model;
+	camera_ = camera;
+
+	worldTransform_.Initialize();
+	worldTransform_.translation_ = position;
+
+	// ★ MyMath の UpdateMatrix を使う
+	UpdateMatrix(worldTransform_);
+	worldTransform_.TransferMatrix();
 }
 
-void Clear::Update() 
-{ 
-	fade_->Update();
+void Clear::Update() {
+	// ★ ここも MyMath のみ
+	UpdateMatrix(worldTransform_);
+	worldTransform_.TransferMatrix();
 }
 
-void Clear::Draw() 
-{
-	sprite->Draw();
-	fade_->Draw();
+void Clear::Draw() {
+	if (model_) {
+		model_->Draw(worldTransform_, *camera_);
+	}
 }
-
-Clear::~Clear() { delete fade_; }

@@ -11,15 +11,15 @@ void TitleScene::Initialize(uint32_t textrueHandle) {
 	TilteHandle = textrueHandle;
 
    TitleSound_ = Audio::GetInstance()->LoadWave("sangatsunosundasora.mp3");  
-   Audio::GetInstance()->PlayWave(TitleSound_, true);
-
+   titleSoundData_ =  Audio::GetInstance()->PlayWave(TitleSound_, true);
 
 	// ゲームプレイフェーズ
 	phase_ = Phase::kFadeIn;
+    finished_ = false;
 
 	fade_ = new Fade();
 	fade_->Initialize();
-	fade_->Start(Fade::Status::FadeIn, 6.0f);
+	fade_->Start(Fade::Status::FadeIn, 4.0f);
 
 }
    
@@ -34,6 +34,8 @@ void TitleScene::Update()
 	fade_->Update();
 	switch (phase_) {
 	case TitleScene::Phase::kFadeIn:
+
+		
 		if (Input::GetInstance()->PushKey(DIK_SPACE)) {
 			phase_ = Phase::kFadeOut;
 			fade_->Start(Fade::Status::FadeOut, 1.0f);
@@ -49,7 +51,7 @@ void TitleScene::Update()
 	case TitleScene::Phase::kFadeOut:
 		if (fade_->IsFinished()) 
 		{
-			Audio::GetInstance()->StopWave(titleSoundHandle_);
+			Audio::GetInstance()->StopWave(titleSoundData_);
 			finished_ = true;
 		}
 		break;

@@ -47,6 +47,18 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
 	skydome_->Initialize(modelskydome_, &camera_);
 
+
+	clearModel_ = Model::CreateFromOBJ("clear", true);
+
+	// ★ Enemy と同じく new する
+	clear_ = new Clear();
+
+	// Enemy と同じく MapChip 座標で置く（これ重要）
+	Vector3 clearPos = mapChipField_->GetMapChipPositionByIndex(56, 18);
+
+	clear_->Initialize(clearModel_, &camera_, clearPos);
+
+
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	GenerateBlocks();
 
@@ -63,18 +75,52 @@ void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 	// 自キャラの生成と初期化
 	player_->SetMapChipField(mapChipField_);
 
-	// 敵
-    Enemy* newEnemy = new Enemy();
-    Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(15, 16);
-    newEnemy->initialize(modelEnemy_, &camera_, enemyPostion);
-
-	enemies_.push_back(newEnemy);
 	
 
-	Vector3 clearPostion = mapChipField_->GetMapChipPositionByIndex(2, 15);
+	// 敵
+	for (int i = 0; i < 3; i++) 
+	{
+		Enemy* newEnemy = new Enemy();
+		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(14 + i, 18);
+		newEnemy->initialize(modelEnemy_, &camera_, enemyPostion);
+
+		enemies_.push_back(newEnemy);
+	}
+
+	for (int i = 0; i < 2; i++) {
+		Enemy* newEnemy = new Enemy();
+		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(15,16 + i);
+		newEnemy->SetPostion(modelEnemy_, &camera_, enemyPostion);
+
+		enemies_.push_back(newEnemy);
+	}
+	
+	for (int i = 0; i < 4; i++) {
+		Enemy* newEnemy = new Enemy();
+		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(40, 16 + i);
+		newEnemy->SetPostion2(modelEnemy_, &camera_, enemyPostion);
+
+		enemies_.push_back(newEnemy);
+	}
+
+	for (int i = 0; i < 4; i++) {
+		Enemy* newEnemy = new Enemy();
+		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(41, 16 + i);
+		newEnemy->SetPostion3(modelEnemy_, &camera_, enemyPostion);
+
+		enemies_.push_back(newEnemy);
+	}
+	
+	for (int i = 0; i < 2; i++) {
+		Enemy* newEnemy = new Enemy();
+		Vector3 enemyPostion = mapChipField_->GetMapChipPositionByIndex(52, 17 + i);
+		newEnemy->SetPostion4(modelEnemy_, &camera_, enemyPostion);
+
+		enemies_.push_back(newEnemy);
+	}
 
 		// ゲームプレイフェーズ
-	phase_ = Phase::kFadeIn;
+ 	phase_ = Phase::kFadeIn;
 
 	fade_ = new Fade();
 	fade_->Initialize();
@@ -146,7 +192,7 @@ void GameScene::ChangePhase()
 
 	Vector3 worldPos = player_->GetWorldPosition();
 
-		if (worldPos.x >= 20) {
+		if (worldPos.x >= 55) {
 			fade_->Start(Fade::Status::FadeOut, 2.0f);
 			phase_ = Phase::kFadOut;
 			isClear_ = true;
@@ -253,6 +299,8 @@ void GameScene::Update()
 		enemy->Update();
 	}
 
+	clear_->Update();
+
 	CheckAllCollisions();
 
 	// ブロックの更新
@@ -344,6 +392,8 @@ void GameScene::Draw() {
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
 	}
+
+	clear_->Draw();
 
 	if (deathParticles_) 
 	{
