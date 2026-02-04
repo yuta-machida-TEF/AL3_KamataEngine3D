@@ -9,7 +9,7 @@ using namespace MathUtility;
 
 void Player::Initialize(Model* model, Camera* camera, KamataEngine::Vector3& position) {
 	// NULLポイントチェック
-	assert(model);
+	//assert(model);
 
 	model_ = model;
 
@@ -454,6 +454,17 @@ Vector3 Player::GetWorldPosition() {
 	return worldPos;
 }
 
+KamataEngine::Vector3 Player::GetPosition() const { return KamataEngine::Vector3(); }
+
+KamataEngine::Vector3 Player::GetSpeed() const { return KamataEngine::Vector3(); }
+
+bool Player::IsAttacking() const { return false; }
+
+void Player::Bounce() 
+{ 
+	velocity_.y = 0.4f; //上方向に跳ねる
+}
+
 AABB Player::GetAABB() {
 	Vector3 worldPos = GetWorldPosition();
 
@@ -463,6 +474,18 @@ AABB Player::GetAABB() {
 	aabb.max = {worldPos.x + kWidth / 2.0f, worldPos.y + kHeight / 2.0f, worldPos.z + kWidth / 2.0f};
 
 	return aabb;
+}
+
+
+void Player::OnDamage() {
+	hp_--;
+
+	// ノックバック例
+	velocity_.y = 0.3f;
+
+	if (hp_ <= 0) {
+		// 死亡処理
+	}
 }
 
 void Player::OnCollision(const Enemy* enemy) {

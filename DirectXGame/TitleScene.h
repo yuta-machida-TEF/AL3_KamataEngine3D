@@ -1,13 +1,13 @@
 #pragma once
 #include "Fade.h"
 #include "KamataEngine.h"
-
+#include"Player.h"
 
 //タイトルシーン
 class TitleScene{
 public:
 	
-	void Initialize();
+	void Initialize(uint32_t textrueHandle);
 	void Update();
 	void Draw();
 
@@ -18,6 +18,17 @@ public:
 	bool finished_ = false;
 	//デスフラグのgetter
 	bool IsFinished() const { return finished_; }
+
+	uint32_t TilteHandle = KamataEngine::TextureManager::Load("Title.png");
+
+	// サウンドデータサウンド
+	uint32_t TitleSound_ = 0;
+	
+	int titleSoundData_; 
+
+
+	// スプライトを生成
+	KamataEngine::Sprite* sprite = KamataEngine::Sprite::Create(TilteHandle, {0.0f, 0.0f});
 
 	// 3Dモデルデータ
 	KamataEngine::Model* model_ = nullptr;
@@ -43,6 +54,10 @@ public:
 
 	//現在のフェーズ
 	Phase phase_ = Phase::kFadeIn;
+
+private:
+
+	Player* player_ = nullptr;
 
 };
 

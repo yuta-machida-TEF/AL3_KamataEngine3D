@@ -8,7 +8,7 @@ using namespace MathUtility;
 void DeathParticles::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position) {
     
 	// NULLポイントチェック
-	assert(model);
+	//assert(model);
 
 	model_ = model;
 

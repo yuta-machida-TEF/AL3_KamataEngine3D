@@ -13,6 +13,12 @@ public:
 
 	KamataEngine::Vector3 GetWorldPosition();
 
+	// 踏みつけの判定
+	KamataEngine::Vector3 GetPosition() const;
+	KamataEngine::Vector3 GetSpeed() const;
+	bool IsAttacking() const; // 攻撃中かどうか
+	void Bounce();
+
 	// キャラクターの当たり判定サイズ
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
@@ -57,7 +63,7 @@ public:
 	};
 
 	// 自キャラ
-	Player* player_ = nullptr;
+	//Player* player_ = nullptr;
 
 	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
 
@@ -104,6 +110,8 @@ public:
 	//デスフラグ
 	bool isDead_ = false;
 
+	void OnDamage(); // ダメージを受ける
+
 	//デスフラグのgetter
 	bool IsDead() const { return isDead_; }
 
@@ -136,4 +144,6 @@ private:
 	KamataEngine::Model* model_;
 
 	KamataEngine::Vector3 velocity_ = {};
+	
+	int hp_ = 3;
 };

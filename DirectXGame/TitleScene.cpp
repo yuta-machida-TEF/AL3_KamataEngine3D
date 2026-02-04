@@ -6,10 +6,15 @@ using namespace KamataEngine;
 using namespace MathUtility;
 
 
-void TitleScene::Initialize() 
-{
-	//3Dモデルの生成
-	model_ = Model::CreateFromOBJ("titleFont");
+void TitleScene::Initialize(uint32_t textrueHandle) {
+	
+	
+	  TitleSound_ = Audio::GetInstance()->LoadWave("amenohinoneon.mp3");
+	titleSoundData_ = Audio::GetInstance()->PlayWave(TitleSound_, true);
+
+
+
+	TilteHandle = textrueHandle;
 
 	//カメラの初期化
 	camera_.Initialize();
@@ -30,6 +35,7 @@ void TitleScene::Initialize()
 TitleScene::~TitleScene()
 {
 	delete fade_;
+	delete sprite;
 }
 
 
@@ -53,6 +59,7 @@ void TitleScene::Update()
 	case TitleScene::Phase::kFadeOut:
 		if (fade_->IsFinished()) 
 		{
+			Audio::GetInstance()->StopWave(titleSoundData_);
 			finished_ = true;
 		}
 		break;
@@ -66,13 +73,18 @@ void TitleScene::Draw()
 	//DirectXCommonインタランスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	//3Dモデル描画前処理
-	Model::PreDraw(dxCommon->GetCommandList());
+	//Model::PreDraw(dxCommon->GetCommandList());
+
+	Sprite::PreDraw(dxCommon->GetCommandList());
+
+	sprite->Draw();
+
 
 	//ここに3Dモデルインタランスの描画処理を記述する
-    model_->Draw(worldTransform_, camera_);
+    //model_->Draw(worldTransform_, camera_);
 
 	//3Dモデル描画後処理
-	Model::PostDraw();
+	//Model::PostDraw();
 
 	fade_->Draw();
 }

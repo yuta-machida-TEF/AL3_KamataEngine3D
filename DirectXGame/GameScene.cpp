@@ -4,11 +4,12 @@
 #include "MyMath.h"
 #include "Player.h"
 #include "DeathParticles.h"
+#include"Collision.h"
 using namespace KamataEngine;
 
 void GameScene::Initialize() { // h(ヘッターファイル)にいれる
 
-	// textureHandle_ = TextureManager::Load("Fruuits.png");
+	textureHandle_ = TextureManager::Load("Title.png");
 
 	sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
@@ -109,31 +110,55 @@ void GameScene::GenerateBlocks() {
 	}
 }
 
-void GameScene::CheckAllCollisions() {
-#pragma region
-	// 判定対象1と2の座標
-	AABB aabb1, aabb2;
+//void GameScene::CheckAllCollisions() {
+//#pragma region
+//	// 判定対象1と2の座標
+//	AABB aabb1, aabb2;
+//
+//	// 自キャラの座標
+//	aabb1 = player_->GetAABB();
+//
+//	// 自キャラと敵弾全ての当たり判定
+//	for (Enemy* enemy : enemies_) {
+//		aabb2 = enemy->GetAABB();
+//
+//		// AABB同士の交差判定
+//		if (IsCollision(aabb1, aabb2)) {
+//			// 自キャラの衝突時間数を呼び出す
+//			player_->OnCollision(enemy);
+//			// 敵の衝突時間関数を呼び出す
+//			enemy->OnCollision(player_);
+//		}
+//	}
+//#pragma endregion
+//}
 
-	// 自キャラの座標
-	aabb1 = player_->GetAABB();
 
-	// 自キャラと敵弾全ての当たり判定
-	for (Enemy* enemy : enemies_) {
-		aabb2 = enemy->GetAABB();
 
-		// AABB同士の交差判定
-		if (IsCollision(aabb1, aabb2)) {
-			// 自キャラの衝突時間数を呼び出す
-			player_->OnCollision(enemy);
-			// 敵の衝突時間関数を呼び出す
-			enemy->OnCollision(player_);
-		}
-	}
-#pragma endregion
+void GameScene::CheckPlayerEnemyCollision() {
+	AABB playerAABB = player_->GetAABB();
+    AABB enemyAABB  = enemy_->GetAABB();
+
+// 踏みつけ判定（先にやる）
+if (IsStompCollision(playerAABB, enemy_->GetHeadAABB(), player_->GetVelocity().y)) {
+    enemy_->OnStomped();
+    player_->Bounce();
+}
+// 通常当たり判定
+else if (IsAABBCollision(playerAABB, enemyAABB)) {
+    enemy_->OnHitByPlayer(player_);
+
+    // ヒット方向を計算
+    KamataEngine::Vector3 dir =
+        player_->GetWorldPosition() - enemy_->GetWorldPosition();
+
+    player_->OnDamage();
 }
 
-void GameScene::ChangePhase() 
-{
+}
+
+
+void GameScene::ChangePhase() {
 
 	switch (phase_) {
 
@@ -210,11 +235,12 @@ GameScene::~GameScene() {
 	worldTransformBlocks_.clear();
 
 	// delete enemy_;
-	for (Enemy* enemy : enemies_) {
-		delete enemy;
-	}
+	/*for (Enemy* enemy_ : enemies_) {
+		delete enemy_;
+	}*/
 
 }
+
 
 void GameScene::Update() 
 {
@@ -248,9 +274,26 @@ void GameScene::Update()
 
 	for (Enemy* enemy : enemies_) {
 		enemy->Update();
+		//enemy->CheckHeadAttack(*player_);
 	}
 
-	CheckAllCollisions();
+	// ★ 全敵撃破でクリア
+	bool allDead = true;
+	for (Enemy* enemy : enemies_) {
+		if (!enemy->IsDead()) {
+			allDead = false;
+			break;
+		}
+	}
+
+	//if (Collision::IsTopVsBody(, playerAABB, 0.4f)) {
+	//	enemy_->OnStepped();
+	//	player_->Bounce();
+	//}
+
+
+
+	//CheckAllCollisions();
 
 	// ブロックの更新
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -345,8 +388,13 @@ void GameScene::Draw() {
 
 	skydome_->Draw();
 
-	for (Enemy* enemy : enemies_) {
-		enemy->Draw();
+
+	for (Enemy* enemy : enemies_) 
+	{
+		if (!enemy->IsDead()) 
+		{
+			enemy->Draw();
+		}
 	}
 
 	if (deathParticles_) 

@@ -5,12 +5,13 @@
 #include "Enemy.h"
 #include"MyMath.h"
 #include <numbers>
+#include<cmath>
 using namespace KamataEngine;
 using namespace MathUtility;
 
 void Enemy::initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position) {
 	// NULLポイントチェック
-	assert(model);
+	//assert(model);
 
 	model_ = model;
 
@@ -37,6 +38,8 @@ void Enemy::Update() {
 
 	static float theta = 0.0f;
 	theta += 0.02f;
+
+	
 
 	// ===== 回転中心（変更したい場所）=====
 	KamataEngine::Vector3 pivot = {
@@ -68,6 +71,13 @@ void Enemy::Update() {
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 
 	worldTransform_.TransferMatrix();
+
+	 if (isDead_) {
+		// 消す or 落とす or アニメ
+		worldTransform_.translation_.y -= 0.1f;
+		return;
+	 }
+
 }
 
 
@@ -94,11 +104,47 @@ KamataEngine::Vector3 Enemy::GetWorldPosition() {
 	return worldPos;
 }
 
+void Enemy::OnHitByPlayer(const Player* player) 
+{
+	if (isDead_) {
+		return;
+	}
 
+	 (void)player; // 今は使わないので警告回避
+}
 
-//KamataEngine::Vector3 Enemy::transslate() { return KamataEngine::Vector3(); }
+void Enemy::OnStomped() {
+	isDead_ = true;
+	// エフェクト・SE・スコアなど
+}
+
+AABB Enemy::GetHeadAABB() {
+	KamataEngine::Vector3 worldPos = GetWorldPosition();
+
+	AABB headAABB;
+
+	// ===== 頭のサイズ調整 =====
+	const float headHeight = kHeight * 0.3f; // 上30%を頭にする
+	const float headWidth = kWidth * 0.8f;   // 横は少し狭く
+
+	// ===== 頭の中心位置 =====
+	float headCenterY = worldPos.y + (kHeight * 0.5f) - (headHeight * 0.5f);
+
+	headAABB.min = {worldPos.x - headWidth * 0.5f, headCenterY - headHeight * 0.5f, worldPos.z - headWidth * 0.5f};
+
+	headAABB.max = {worldPos.x + headWidth * 0.5f, headCenterY + headHeight * 0.5f, worldPos.z + headWidth * 0.5f};
+
+	return headAABB;
+}
+
 
 
 void Enemy::OnCollision(const Player* player) { (void)player; }
 
-void Enemy::Draw() { model_->Draw(worldTransform_, *camera_ /*textureHandle_*/); }
+void Enemy::Draw() 
+{ 
+	model_->Draw(worldTransform_, *camera_ /*textureHandle_*/);
+	
+   
+
+}

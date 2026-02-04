@@ -3,6 +3,7 @@
 #include "KamataEngine.h"
 #include "TitleScene.h"
 
+
 using namespace KamataEngine;                           // usingは、kamataEngineの下に書く
 DirectXCommon* dxCommon = DirectXCommon::GetInstance(); // DirectX12のクラスは、DirectXCommonにする
                                                         // シーン(型)
@@ -37,7 +38,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	titleScene = new TitleScene();
 	// ゲームシーンの初期化
 	gameScene->Initialize();
-	titleScene->Initialize();
+	titleScene->Initialize(0);
 	scene = Scene::kTitle;
 
 	
@@ -103,7 +104,7 @@ void ChangeScene() {
 			gameScene = nullptr;
 			//新シーンの生成と初期化
 			titleScene = new TitleScene;
-			titleScene->Initialize();
+			titleScene->Initialize(0);
 		}
 		break;
 	}

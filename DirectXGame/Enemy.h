@@ -9,7 +9,6 @@ class Player;
 class Enemy {
 public:
 
-
 	// マップチップによるフィールド
 	MapChipField* mapChipField_ = nullptr;
 
@@ -42,6 +41,12 @@ public:
 	// ワールド座標を取得
 	KamataEngine::Vector3 GetWorldPosition();
 
+	//踏みつけ判定
+	void OnHitByPlayer(const Player* player);
+	void OnStomped();     // 踏みつけ
+	bool IsDead() const { return isDead_; }
+	AABB GetHeadAABB();
+
 
 	void initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position);
 	void Update();
@@ -60,5 +65,13 @@ private:
 	KamataEngine::Vector3 translate_ ={};
 
 	KamataEngine::Vector3 rotate_ = {};
+
+	//当たり判定用サイズ
+	KamataEngine::Vector3 bodySize_ = {0.6f, 0.6f, 0.6f};
+
+	//状態確認専用
+	bool isDead_ = false;
+
+	float headHeight_ = 0.6f;
 
 };

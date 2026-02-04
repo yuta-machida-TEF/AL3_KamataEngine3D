@@ -58,7 +58,7 @@ public:
 	Skydome* skydome_ = nullptr;
 
 	// 敵
-	// Enemy* enemy_ = nullptr;
+	Enemy* enemy_ = nullptr;
 
 	std::list<Enemy*> enemies_;
 
@@ -79,7 +79,7 @@ public:
 	DeathParticles* deathParticles_ = nullptr;
 
 	// 全ての当たり判定を行う
-	void CheckAllCollisions();
+	void CheckPlayerEnemyCollision();
 
 	// ゲームのフェーズ(型)
 	enum class Phase {
@@ -106,7 +106,7 @@ public:
 
 	// ゲームの現在フェーズ(変数)
 	Phase phase_ = Phase::kFadeIn;
- 
+
 
 	void ChangePhase();
 
@@ -118,4 +118,5 @@ public:
 
 	// 描画
 	void Draw();
+
 };
