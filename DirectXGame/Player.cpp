@@ -460,8 +460,12 @@ KamataEngine::Vector3 Player::GetSpeed() const { return KamataEngine::Vector3();
 
 bool Player::IsAttacking() const { return false; }
 
-void Player::Bounce() 
-{ 
+//void Player::SetGroundType(GroundType type) 
+//{
+//
+//}
+
+void Player::Bounce() { 
 	velocity_.y = 0.4f; //上方向に跳ねる
 }
 

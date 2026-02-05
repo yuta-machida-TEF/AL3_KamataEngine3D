@@ -4,7 +4,6 @@
 #include "MyMath.h"
 #include "Player.h"
 #include "DeathParticles.h"
-#include"Collision.h"
 using namespace KamataEngine;
 
 void GameScene::Initialize() { // h(ヘッターファイル)にいれる
@@ -110,51 +109,27 @@ void GameScene::GenerateBlocks() {
 	}
 }
 
-//void GameScene::CheckAllCollisions() {
-//#pragma region
-//	// 判定対象1と2の座標
-//	AABB aabb1, aabb2;
-//
-//	// 自キャラの座標
-//	aabb1 = player_->GetAABB();
-//
-//	// 自キャラと敵弾全ての当たり判定
-//	for (Enemy* enemy : enemies_) {
-//		aabb2 = enemy->GetAABB();
-//
-//		// AABB同士の交差判定
-//		if (IsCollision(aabb1, aabb2)) {
-//			// 自キャラの衝突時間数を呼び出す
-//			player_->OnCollision(enemy);
-//			// 敵の衝突時間関数を呼び出す
-//			enemy->OnCollision(player_);
-//		}
-//	}
-//#pragma endregion
-//}
+void GameScene::CheckAllCollisions() {
+#pragma region
+	// 判定対象1と2の座標
+	AABB aabb1, aabb2;
 
+	// 自キャラの座標
+	aabb1 = player_->GetAABB();
 
+	// 自キャラと敵弾全ての当たり判定
+	for (Enemy* enemy : enemies_) {
+		aabb2 = enemy->GetAABB();
 
-void GameScene::CheckPlayerEnemyCollision() {
-	AABB playerAABB = player_->GetAABB();
-    AABB enemyAABB  = enemy_->GetAABB();
-
-// 踏みつけ判定（先にやる）
-if (IsStompCollision(playerAABB, enemy_->GetHeadAABB(), player_->GetVelocity().y)) {
-    enemy_->OnStomped();
-    player_->Bounce();
-}
-// 通常当たり判定
-else if (IsAABBCollision(playerAABB, enemyAABB)) {
-    enemy_->OnHitByPlayer(player_);
-
-    // ヒット方向を計算
-    KamataEngine::Vector3 dir =
-        player_->GetWorldPosition() - enemy_->GetWorldPosition();
-
-    player_->OnDamage();
-}
-
+		// AABB同士の交差判定
+		if (IsCollision(aabb1, aabb2)) {
+			// 自キャラの衝突時間数を呼び出す
+			player_->OnCollision(enemy);
+			// 敵の衝突時間関数を呼び出す
+			enemy->OnCollision(player_);
+		}
+	}
+#pragma endregion
 }
 
 
@@ -163,45 +138,46 @@ void GameScene::ChangePhase() {
 	switch (phase_) {
 
 	case Phase::kFadeIn:
-		if (fade_->IsFinished()) 
-		{
-			//ゲームプレイへ切り替え
+		if (fade_->IsFinished()) {
+			// ゲームプレイへ切り替え
 			phase_ = Phase::kPlay;
 		}
 		break;
 	case Phase::kPlay:
 
-		/*fade_ = new Fade();
-		fade_->Initialize();
-		fade_->Start(Fade::Status::FadeIn, 6.0f);*/
+		//Vector3 worldPos = player_->GetWorldPosition();
 
-		//ゲームプレイフェーズの処理
-		if(player_->IsDead()) 
-		{
-			//死亡演出フェーズに切り替え
-			phase_ = Phase::kDeath;
-			//自キャラの座標を取得
-			//Vector3 deathParticlesPosition = player_->GetWorldPosition();
+		//if (worldPos.x >= 97) {
+		//	fade_->Start(Fade::Status::FadeOut, 2.0f);
+		//	phase_ = Phase::kFadOut;
+		//	//isClear_ = true;
+		//}
 
+		// ゲームプレイフェーズの処理
+		if (player_->IsDead()) {
+			
 			// 仮の生成処理。後で削除
 			deathParticles_ = new DeathParticles;
 			KamataEngine::Vector3 deathParticlesPosition = player_->GetWorldPosition();
 			deathParticles_->Initialize(modelDeath_, &camera_, deathParticlesPosition);
+			
+			// 死亡演出フェーズに切り替え
+			phase_ = Phase::kDeath;
+
 		}
 		break;
 	case Phase::kDeath:
-		//デス演出フェーズの処理
-		if (deathParticles_ && deathParticles_->IsFinished()) 
-		{
+		// デス演出フェーズの処理
+		if (deathParticles_ && deathParticles_->IsFinished()) {
 			fade_->Start(Fade::Status::FadeOut, 2.0f);
 			phase_ = Phase::kFadOut;
 		}
 		break;
 
 	case Phase::kFadOut:
-		if (fade_->IsFinished()) 
-		{
-			//シーン終了へ
+		if (fade_->IsFinished()) {
+			//Audio::GetInstance()->StopWave(voiceHandle_);
+			// シーン終了へ
 			finished_ = true;
 		}
 		break;
@@ -277,23 +253,10 @@ void GameScene::Update()
 		//enemy->CheckHeadAttack(*player_);
 	}
 
-	// ★ 全敵撃破でクリア
-	bool allDead = true;
-	for (Enemy* enemy : enemies_) {
-		if (!enemy->IsDead()) {
-			allDead = false;
-			break;
-		}
-	}
-
-	//if (Collision::IsTopVsBody(, playerAABB, 0.4f)) {
-	//	enemy_->OnStepped();
-	//	player_->Bounce();
-	//}
+	CheckAllCollisions();
 
 
 
-	//CheckAllCollisions();
 
 	// ブロックの更新
 	for (std::vector<KamataEngine::WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -340,13 +303,13 @@ void GameScene::Update()
 	}
 
 	//デスパーティクルが終了したらシーンを終了する
-	/*if (deathParticles_ && deathParticles_->IsFinished()) 
+	if (deathParticles_ && deathParticles_->IsFinished()) 
 	{
 		phase_ = Phase::kFadOut;
 		fade_->Start(Fade::Status::FadeOut, 1.0f);
-	}*/
+	}
 
-	ChangePhase();
+   ChangePhase();
 	switch (phase_) 
 	{
 	case Phase::kPlay:

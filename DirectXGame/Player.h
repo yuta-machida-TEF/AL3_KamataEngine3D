@@ -6,6 +6,7 @@ class MapChipField;
 class Enemy;
 
 
+
 class Player {
 public:
 	// AABBを取得
@@ -61,6 +62,9 @@ public:
 		kNumCorner // 要素数
 
 	};
+
+
+
 
 	// 自キャラ
 	//Player* player_ = nullptr;

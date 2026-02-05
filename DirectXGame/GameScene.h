@@ -79,7 +79,7 @@ public:
 	DeathParticles* deathParticles_ = nullptr;
 
 	// 全ての当たり判定を行う
-	void CheckPlayerEnemyCollision();
+	void CheckAllCollisions();
 
 	// ゲームのフェーズ(型)
 	enum class Phase {

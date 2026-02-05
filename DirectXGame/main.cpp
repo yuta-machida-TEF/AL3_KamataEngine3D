@@ -31,7 +31,7 @@ void DrawScene();
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	// エンジンの初期化
-	KamataEngine::Initialize(L"LE2D_22_マチダ_ユウタ_AL3"); // 名前を入れると実行画面の左上に名前が表示される
+	KamataEngine::Initialize(L"2361_イモムシよ、ボスを倒せ"); // 名前を入れると実行画面の左上に名前が表示される
 
 	// ゲームシーンのインタンス生成
 	gameScene = new GameScene();
